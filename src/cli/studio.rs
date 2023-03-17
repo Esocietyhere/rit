@@ -1,4 +1,5 @@
 use std::process::Command;
+#[derive(Debug)]
 
 pub struct BuildParams {
     pub project_name: String,
@@ -13,7 +14,7 @@ pub struct SyncParams {
     pub auth: String,
 }
 
-pub async fn init() -> anyhow::Result<Option<String>> {
+pub fn init() -> anyhow::Result<Option<String>> {
     Command::new("sh")
         .arg("-c")
         .arg("rojo init && wally init && aftman init")
@@ -22,7 +23,7 @@ pub async fn init() -> anyhow::Result<Option<String>> {
     Ok(None)
 }
 
-pub async fn build(params: &BuildParams) -> anyhow::Result<Option<String>> {
+pub fn build(params: &BuildParams) -> anyhow::Result<Option<String>> {
     Command::new("sh")
         .arg("-c")
         .arg(format!(
@@ -37,7 +38,7 @@ pub async fn build(params: &BuildParams) -> anyhow::Result<Option<String>> {
     Ok(None)
 }
 
-pub async fn open_place(params: &OpenPlaceParams) -> anyhow::Result<Option<String>> {
+pub fn open_place(params: &OpenPlaceParams) -> anyhow::Result<Option<String>> {
     if cfg!(target_os = "windows") {
         Command::new("sh")
             .arg("-c")
@@ -75,7 +76,7 @@ pub async fn open_place(params: &OpenPlaceParams) -> anyhow::Result<Option<Strin
     Ok(None)
 }
 
-pub async fn img_sync(params: &SyncParams) -> anyhow::Result<Option<String>> {
+pub fn img_sync(params: &SyncParams) -> anyhow::Result<Option<String>> {
     Command::new("sh")
         .arg("-c")
         .arg(format!(

@@ -1,11 +1,9 @@
 mod devtools;
 mod studio;
 
+use self::devtools::Devtools;
+use self::studio::{build, img_sync, init, open_place, BuildParams, OpenPlaceParams, SyncParams};
 use clap::{Parser, Subcommand};
-use devtools::Devtools;
-use studio::init;
-
-use self::studio::{build, img_sync, open_place, BuildParams, OpenPlaceParams, SyncParams};
 
 #[derive(Debug, Parser)]
 #[clap(name = "rit", version)]
@@ -54,19 +52,16 @@ pub enum Command {
 impl Cli {
     pub async fn run(self) -> anyhow::Result<Option<String>> {
         match self.command {
-            Command::Init => init().await,
-            Command::Devtools => Devtools::install().await,
+            Command::Init => init(),
+            Command::Devtools => Devtools::install(),
             Command::Build {
                 project_name,
                 output_name,
-            } => {
-                build(&BuildParams {
-                    project_name,
-                    output_name,
-                })
-                .await
-            }
-            Command::Open { file_name } => open_place(&OpenPlaceParams { file_name }).await,
+            } => build(&BuildParams {
+                project_name,
+                output_name,
+            }),
+            Command::Open { file_name } => open_place(&OpenPlaceParams { file_name }),
             Command::Run {
                 project_name,
                 output_name,
@@ -74,16 +69,14 @@ impl Cli {
                 build(&BuildParams {
                     project_name: project_name.clone(),
                     output_name: output_name.clone(),
-                })
-                .await?;
+                })?;
 
                 open_place(&OpenPlaceParams {
                     file_name: format!(r#"build/{}.rbxl"#, output_name.clone(),),
-                })
-                .await?;
+                })?;
                 Ok(None)
             }
-            Command::Sync { auth } => img_sync(&SyncParams { auth }).await,
+            Command::Sync { auth } => img_sync(&SyncParams { auth }),
         }
     }
 }

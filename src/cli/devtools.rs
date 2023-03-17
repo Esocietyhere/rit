@@ -1,9 +1,10 @@
 use std::process::Command;
+#[derive(Debug)]
 
 pub struct Devtools {}
 
 impl Devtools {
-    pub async fn install() -> anyhow::Result<Option<String>> {
+    pub fn install() -> anyhow::Result<Option<String>> {
         // Trust roblox/tarmac
         Command::new("aftman")
             .arg("trust")

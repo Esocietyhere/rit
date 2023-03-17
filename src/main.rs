@@ -6,9 +6,9 @@ use std::process;
 
 #[tokio::main]
 async fn main() {
-    let cli_args = Cli::parse();
+    let args = Cli::parse();
 
-    match cli_args.run().await {
+    match args.run().await {
         Ok(str) => {
             if let Some(s) = str {
                 println!("{s}");
