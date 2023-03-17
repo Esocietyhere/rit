@@ -1,4 +1,6 @@
 mod cli;
+mod commands;
+mod rbx;
 
 use clap::Parser;
 use cli::Cli;
