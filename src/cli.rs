@@ -42,7 +42,15 @@ pub enum Command {
         output_name: String,
     },
     /// Builds the project and deploys it to the Roblox CDN
-    Deploy,
+    Deploy {
+        /// The branch to deploy to
+        #[clap(short, long, value_parser)]
+        branch_name: String,
+
+        /// The Roblox API key
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: String,
+    },
     /// Syncs images to the Roblox CDN
     Sync {
         #[clap(short, long, value_parser, env = "ROBLOSECURITY")]
@@ -77,13 +85,19 @@ impl Cli {
                 })?;
                 Ok(None)
             }
-            Command::Deploy => {
+            Command::Deploy {
+                branch_name,
+                api_key,
+            } => {
                 let mut file = File::open("config.json")?;
                 let mut contents = String::new();
                 file.read_to_string(&mut contents)?;
                 let json: Value = serde_json::from_str(&contents)?;
+                let universe_id = json["deployment"]["universes"][branch_name]
+                    .as_str()
+                    .unwrap();
 
-                println!("{:?}", json);
+                println!("{:?}", universe_id);
 
                 Ok(None)
             }
