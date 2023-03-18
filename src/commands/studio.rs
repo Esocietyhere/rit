@@ -1,7 +1,9 @@
+use super::getenv;
+use std::fs;
 use std::path::Path;
 use std::process::Command;
 use std::string::String;
-use std::{env, fs};
+
 #[derive(Debug)]
 
 pub struct BuildParams {
@@ -89,11 +91,7 @@ pub fn open_place(params: &OpenPlaceParams) -> Option<String> {
 }
 
 pub fn img_sync(params: &SyncParams) -> anyhow::Result<Option<String>> {
-    let auth = match params.auth.clone() {
-        Some(v) => v,
-        None => env::var("ROBLOSECURITY").expect("ROBLOSECURITY not set"),
-    };
-
+    let auth = getenv(params.auth.clone(), "ROBLOSECURITY".to_string());
     Command::new("sh")
         .arg("-c")
         .arg(format!(
