@@ -78,19 +78,22 @@ impl Cli {
                 })?;
 
                 open_place(&OpenPlaceParams {
-                    file_name: format!(r#"build/{}.rbxl"#, output_name.clone(),),
+                    file_name: format!(r#"build/{}.rbxl"#, output_name.clone()),
                 })?;
                 Ok(None)
             }
             Command::Deploy {
                 branch_name,
                 api_key,
-            } => deploy(&DeployParams {
-                branch_name: branch_name,
-                api_key: api_key.unwrap_or(env::var("OPENCLOUD_KEY").unwrap()),
-            }),
+            } => {
+                deploy(&DeployParams {
+                    branch_name,
+                    api_key,
+                })
+                .await
+            }
             Command::Sync { auth } => img_sync(&SyncParams {
-                auth: auth.unwrap_or(env::var("ROBLOSECURITY").unwrap()),
+                auth: auth.unwrap(),
             }),
         }
     }

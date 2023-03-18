@@ -1,5 +1,6 @@
-use crate::rbx::Experience;
-use clap::{Parser, Subcommand};
+use crate::rbx::Place;
+use anyhow::Ok;
+use clap::Parser;
 use serde_json::Value;
 use std::env;
 use std::fs::File;
@@ -16,7 +17,7 @@ pub struct Config {
 
 pub struct DeployParams {
     pub branch_name: Option<String>,
-    pub api_key: String,
+    pub api_key: Option<String>,
 }
 
 impl Config {
@@ -46,7 +47,9 @@ impl Config {
         };
     }
 
-    pub fn get_places(&self) -> Result<&Vec<Value>, anyhow::Error> {
+    pub fn get_places(
+        &self,
+    ) -> Result<&serde_json::Map<std::string::String, Value>, anyhow::Error> {
         let places = &self
             .json
             .get("deployment")
@@ -55,7 +58,7 @@ impl Config {
             .unwrap()
             .get(&self.branch);
         return match places {
-            Some(v) => Ok(Some(v).unwrap().as_array().unwrap()),
+            Some(v) => Ok(Some(v).unwrap().as_object().unwrap()),
             None => Err(anyhow::anyhow!(
                 "No places found for branch {}",
                 &self.branch
@@ -64,14 +67,25 @@ impl Config {
     }
 }
 
-pub fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
+pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
     let branch = match params.branch_name.clone() {
         Some(v) => v,
-        None => "master".to_string(),
+        None => "main".to_string(),
     };
 
-    let config = Config::new(params.branch_name.clone().unwrap());
+    let api_key = match params.api_key.clone() {
+        Some(v) => v,
+        None => env::var("OPENCLOUD_KEY").expect("OPENCLOUD_KEY not set"),
+    };
+
+    let config = Config::new(branch);
     let universe_id = config.get_universe_id();
     let places = config.get_places();
+
+    let place = Place::new(&api_key, universe_id.unwrap());
+
+    for (key, value) in places.unwrap().iter() {
+        place.publish(key, value.as_u64().unwrap()).await;
+    }
     Ok(None)
 }

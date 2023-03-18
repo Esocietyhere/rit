@@ -4,10 +4,12 @@ mod rbx;
 
 use clap::Parser;
 use cli::Cli;
+use dotenv::dotenv;
 use std::process;
 
 #[tokio::main]
 async fn main() {
+    dotenv().ok();
     let args = Cli::parse();
 
     match args.run().await {

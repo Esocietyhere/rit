@@ -4,20 +4,20 @@ use rbxcloud::rbx::{PlaceId, PublishVersionType, RbxCloud, UniverseId};
 
 #[derive(Debug, Parser)]
 #[clap(name = "experience", about = "Manage experiences")]
-pub struct Experience {
+pub struct Place {
     pub api_key: String,
     pub universe_id: u64,
 }
 
-impl Experience {
-    pub fn new(api_key: &str, universe_id: u64) -> Experience {
-        Experience {
+impl Place {
+    pub fn new(api_key: &str, universe_id: u64) -> Place {
+        Place {
             api_key: api_key.to_string(),
             universe_id,
         }
     }
 
-    pub async fn publish(&self, place_id: u64, name: &str) -> () {
+    pub async fn publish(&self, name: &str, place_id: u64) -> () {
         let deploy_directory = "build/deploy";
         let path = format!("{}/{}.rbxlx", deploy_directory, name);
         let publish_version_type = PublishVersionType::Published;
