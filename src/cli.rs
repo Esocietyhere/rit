@@ -1,8 +1,6 @@
 use crate::commands::*;
 use clap::{Parser, Subcommand};
-use serde_json::Value;
-use std::fs::File;
-use std::io::prelude::*;
+use std::env;
 
 #[derive(Debug, Parser)]
 #[clap(name = "rit", version)]
@@ -45,16 +43,15 @@ pub enum Command {
     Deploy {
         /// The branch to deploy to
         #[clap(short, long, value_parser)]
-        branch_name: String,
-
+        branch_name: Option<String>,
         /// The Roblox API key
         #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
-        api_key: String,
+        api_key: Option<String>,
     },
     /// Syncs images to the Roblox CDN
     Sync {
         #[clap(short, long, value_parser, env = "ROBLOSECURITY")]
-        auth: String,
+        auth: Option<String>,
     },
 }
 
@@ -88,20 +85,13 @@ impl Cli {
             Command::Deploy {
                 branch_name,
                 api_key,
-            } => {
-                let mut file = File::open("config.json")?;
-                let mut contents = String::new();
-                file.read_to_string(&mut contents)?;
-                let json: Value = serde_json::from_str(&contents)?;
-                let universe_id = json["deployment"]["universes"][branch_name]
-                    .as_str()
-                    .unwrap();
-
-                println!("{:?}", universe_id);
-
-                Ok(None)
-            }
-            Command::Sync { auth } => img_sync(&SyncParams { auth }),
+            } => deploy(&DeployParams {
+                branch_name: branch_name,
+                api_key: api_key.unwrap_or(env::var("OPENCLOUD_KEY").unwrap()),
+            }),
+            Command::Sync { auth } => img_sync(&SyncParams {
+                auth: auth.unwrap_or(env::var("ROBLOSECURITY").unwrap()),
+            }),
         }
     }
 }

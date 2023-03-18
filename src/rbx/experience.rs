@@ -1,5 +1,5 @@
 use crate::commands::{build, BuildParams};
-use clap::{Parser, Subcommand};
+use clap::Parser;
 use rbxcloud::rbx::{PlaceId, PublishVersionType, RbxCloud, UniverseId};
 
 #[derive(Debug, Parser)]
@@ -17,7 +17,7 @@ impl Experience {
         }
     }
 
-    pub async fn deploy(&self, place_id: u64, name: &str) -> () {
+    pub async fn publish(&self, place_id: u64, name: &str) -> () {
         let deploy_directory = "build/deploy";
         let path = format!("{}/{}.rbxlx", deploy_directory, name);
         let publish_version_type = PublishVersionType::Published;
