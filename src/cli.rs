@@ -91,9 +91,7 @@ impl Cli {
                 })
                 .await
             }
-            Command::Sync { auth } => img_sync(&SyncParams {
-                auth: auth.unwrap(),
-            }),
+            Command::Sync { auth } => img_sync(&SyncParams { auth }),
         }
     }
 }

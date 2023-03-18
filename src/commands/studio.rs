@@ -1,7 +1,7 @@
-use std::fs;
 use std::path::Path;
 use std::process::Command;
 use std::string::String;
+use std::{env, fs};
 #[derive(Debug)]
 
 pub struct BuildParams {
@@ -14,7 +14,7 @@ pub struct OpenPlaceParams {
 }
 
 pub struct SyncParams {
-    pub auth: String,
+    pub auth: Option<String>,
 }
 
 pub fn init() -> anyhow::Result<Option<String>> {
@@ -90,11 +90,16 @@ pub fn open_place(params: &OpenPlaceParams) -> Option<String> {
 }
 
 pub fn img_sync(params: &SyncParams) -> anyhow::Result<Option<String>> {
+    let auth = match params.auth.clone() {
+        Some(v) => v,
+        None => env::var("ROBLOSECURITY").expect("ROBLOSECURITY not set"),
+    };
+
     Command::new("sh")
         .arg("-c")
         .arg(format!(
             r#"tarmac sync --target roblox --auth "{}" --retry 3 --retry-delay 5"#,
-            params.auth,
+            auth,
         ))
         .output()
         .expect("failed to execute process");
