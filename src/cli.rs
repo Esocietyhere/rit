@@ -27,7 +27,7 @@ pub enum Command {
     Open {
         /// The name of the place file to open
         #[clap(short, long, value_parser)]
-        file_name: String,
+        file_name: Option<String>,
     },
     /// Builds the project and opens the place file
     Run {
@@ -71,16 +71,13 @@ impl Cli {
                 project_name,
                 output_name,
             } => {
-                if output_name == None {
-                    return Err(anyhow::anyhow!("No output name provided"));
-                };
                 build(&BuildParams {
                     project_name: project_name.clone(),
                     output_name: output_name.clone(),
                 });
 
                 open_place(&OpenPlaceParams {
-                    file_name: output_name.unwrap(),
+                    file_name: output_name,
                 });
                 Ok(None)
             }

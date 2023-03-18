@@ -10,7 +10,7 @@ pub struct BuildParams {
 }
 
 pub struct OpenPlaceParams {
-    pub file_name: String,
+    pub file_name: Option<String>,
 }
 
 pub struct SyncParams {
@@ -50,35 +50,43 @@ pub fn build(params: &BuildParams) -> Option<String> {
 }
 
 pub fn open_place(params: &OpenPlaceParams) -> Option<String> {
-    let file_path = format!("build/{}.rbxl", params.file_name);
+    let input = format!(
+        "build/{}.rbxl",
+        params.file_name.clone().unwrap_or("default".to_string())
+    );
+    let path = Path::new(&input);
+    if !path.exists() {
+        println!("File {} does not exist!", input);
+        return None;
+    };
     if cfg!(target_os = "windows") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(r#"start "{}""#, file_path))
+            .arg(format!(r#"start "{}""#, input))
             .output()
             .expect("failed to execute process");
     } else if cfg!(target_os = "wsl") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(r#"start "{}""#, file_path))
+            .arg(format!(r#"start "{}""#, input))
             .output()
             .expect("failed to execute process");
     } else if cfg!(target_os = "linux") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(r#"xdg-open "{}""#, file_path))
+            .arg(format!(r#"xdg-open "{}""#, input))
             .output()
             .expect("failed to execute process");
     } else if cfg!(target_os = "macos") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(r#"open "{}""#, file_path))
+            .arg(format!(r#"open "{}""#, input))
             .output()
             .expect("failed to execute process");
     } else {
         println!("Unsupported operating system!");
     }
-    Some(file_path)
+    Some(input)
 }
 
 pub fn img_sync(params: &SyncParams) -> anyhow::Result<Option<String>> {
