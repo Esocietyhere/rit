@@ -1,6 +1,5 @@
 use crate::commands::*;
 use clap::{Parser, Subcommand};
-use std::env;
 
 #[derive(Debug, Parser)]
 #[clap(name = "rit", version)]
@@ -63,10 +62,10 @@ impl Cli {
             Command::Build {
                 project_name,
                 output_name,
-            } => build(&BuildParams {
+            } => Ok(build(&BuildParams {
                 project_name,
                 output_name,
-            }),
+            })),
             Command::Open { file_name } => open_place(&OpenPlaceParams { file_name }),
             Command::Run {
                 project_name,
@@ -75,7 +74,7 @@ impl Cli {
                 build(&BuildParams {
                     project_name: project_name.clone(),
                     output_name: output_name.clone(),
-                })?;
+                });
 
                 open_place(&OpenPlaceParams {
                     file_name: format!(r#"build/{}.rbxl"#, output_name.clone()),

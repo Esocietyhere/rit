@@ -1,3 +1,4 @@
+use crate::commands::{build, BuildParams};
 use crate::rbx::Place;
 use anyhow::Ok;
 use clap::Parser;
@@ -84,8 +85,15 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
 
     let place = Place::new(&api_key, universe_id.unwrap());
 
-    for (key, value) in places.unwrap().iter() {
-        place.publish(key, value.as_u64().unwrap()).await;
+    for (place_name, place_id) in places.unwrap().iter() {
+        let deploy_dir = format!("deploy/{}", place_name);
+        let path = build(&BuildParams {
+            project_name: place_name.to_string(),
+            output_name: deploy_dir.clone(),
+        })
+        .unwrap();
+
+        place.publish(&path, place_id.as_u64().unwrap()).await;
     }
     Ok(None)
 }

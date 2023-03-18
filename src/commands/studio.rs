@@ -1,6 +1,7 @@
 use std::fs;
 use std::path::Path;
 use std::process::Command;
+use std::string::String;
 #[derive(Debug)]
 
 pub struct BuildParams {
@@ -25,12 +26,12 @@ pub fn init() -> anyhow::Result<Option<String>> {
     Ok(None)
 }
 
-pub fn build(params: &BuildParams) -> anyhow::Result<Option<String>> {
+pub fn build(params: &BuildParams) -> Option<String> {
     let output = format!("build/{}.rbxl", params.output_name);
     let path = Path::new(&output).parent().unwrap();
     if !path.exists() {
-        fs::create_dir_all(path)?;
-    }
+        fs::create_dir_all(path).expect("failed to create directory");
+    };
     Command::new("sh")
         .arg("-c")
         .arg(format!(
@@ -41,7 +42,7 @@ pub fn build(params: &BuildParams) -> anyhow::Result<Option<String>> {
         .expect("failed to execute process");
 
     println!("Built project {}!", params.project_name);
-    Ok(None)
+    Some(output)
 }
 
 pub fn open_place(params: &OpenPlaceParams) -> anyhow::Result<Option<String>> {
