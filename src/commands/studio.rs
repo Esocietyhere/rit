@@ -45,42 +45,36 @@ pub fn build(params: &BuildParams) -> Option<String> {
     Some(output)
 }
 
-pub fn open_place(params: &OpenPlaceParams) -> anyhow::Result<Option<String>> {
+pub fn open_place(params: &OpenPlaceParams) -> Option<String> {
+    let file_path = format!("build/{}.rbxl", params.file_name);
     if cfg!(target_os = "windows") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(
-                r#"start "build/{}.rbxl""#,
-                params.file_name.clone()
-            ))
+            .arg(format!(r#"start "{}""#, file_path))
             .output()
             .expect("failed to execute process");
     } else if cfg!(target_os = "wsl") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(
-                r#"start "build/{}.rbxl""#,
-                params.file_name.clone()
-            ))
+            .arg(format!(r#"start "{}""#, file_path))
             .output()
             .expect("failed to execute process");
     } else if cfg!(target_os = "linux") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(
-                r#"xdg-open "build/{}.rbxl""#,
-                params.file_name.clone()
-            ))
+            .arg(format!(r#"xdg-open "{}""#, file_path))
             .output()
             .expect("failed to execute process");
     } else if cfg!(target_os = "macos") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(r#"open "build/{}.rbxl""#, params.file_name.clone()))
+            .arg(format!(r#"open "{}""#, file_path))
             .output()
             .expect("failed to execute process");
+    } else {
+        println!("Unsupported operating system!");
     }
-    Ok(None)
+    Some(file_path)
 }
 
 pub fn img_sync(params: &SyncParams) -> anyhow::Result<Option<String>> {

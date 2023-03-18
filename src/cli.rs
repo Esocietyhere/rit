@@ -66,7 +66,7 @@ impl Cli {
                 project_name,
                 output_name,
             })),
-            Command::Open { file_name } => open_place(&OpenPlaceParams { file_name }),
+            Command::Open { file_name } => Ok(open_place(&OpenPlaceParams { file_name })),
             Command::Run {
                 project_name,
                 output_name,
@@ -77,8 +77,8 @@ impl Cli {
                 });
 
                 open_place(&OpenPlaceParams {
-                    file_name: format!(r#"build/{}.rbxl"#, output_name.clone()),
-                })?;
+                    file_name: output_name,
+                });
                 Ok(None)
             }
             Command::Deploy {
