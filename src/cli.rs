@@ -49,7 +49,7 @@ pub enum Command {
     },
     /// Syncs images to the Roblox CDN
     Sync {
-        #[clap(short, long, value_parser, env = "ROBLOSECURITY")]
+        #[clap(short, long, value_parser)]
         auth: Option<String>,
     },
 }

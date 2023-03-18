@@ -79,6 +79,8 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
         None => env::var("OPENCLOUD_KEY").expect("OPENCLOUD_KEY not set"),
     };
 
+    println!("Publishing to {} universe", branch.clone());
+
     let config = Config::new(branch);
     let universe_id = config.get_universe_id();
     let places = config.get_places();

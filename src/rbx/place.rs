@@ -27,7 +27,10 @@ impl Place {
         let publish_result = experience.publish(path, publish_version_type).await;
         match publish_result {
             Ok(result) => {
-                println!("Published place! New version: {}", result.version_number);
+                println!(
+                    "Published place ({}) with version number: {}",
+                    place_id, result.version_number
+                );
             }
             Err(e) => {
                 eprintln!("{e:?}");
