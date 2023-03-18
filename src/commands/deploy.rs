@@ -88,8 +88,8 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
     for (place_name, place_id) in places.unwrap().iter() {
         let deploy_dir = format!("deploy/{}", place_name);
         let path = build(&BuildParams {
-            project_name: place_name.to_string(),
-            output_name: deploy_dir.clone(),
+            project_name: Some(place_name.to_string()),
+            output_name: Some(deploy_dir),
         })
         .unwrap();
 

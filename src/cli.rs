@@ -18,10 +18,10 @@ pub enum Command {
     Build {
         /// The name of the project to build
         #[clap(short, long, value_parser)]
-        project_name: String,
+        project_name: Option<String>,
         /// The name of the output file
         #[clap(short, long, value_parser)]
-        output_name: String,
+        output_name: Option<String>,
     },
     /// Open a place file
     Open {
@@ -33,10 +33,10 @@ pub enum Command {
     Run {
         /// The name of the project to build
         #[clap(short, long, value_parser)]
-        project_name: String,
+        project_name: Option<String>,
         /// The name of the output file
         #[clap(short, long, value_parser)]
-        output_name: String,
+        output_name: Option<String>,
     },
     /// Builds the project and deploys it to the Roblox CDN
     Deploy {
@@ -71,13 +71,16 @@ impl Cli {
                 project_name,
                 output_name,
             } => {
+                if output_name == None {
+                    return Err(anyhow::anyhow!("No output name provided"));
+                };
                 build(&BuildParams {
                     project_name: project_name.clone(),
                     output_name: output_name.clone(),
                 });
 
                 open_place(&OpenPlaceParams {
-                    file_name: output_name,
+                    file_name: output_name.unwrap(),
                 });
                 Ok(None)
             }

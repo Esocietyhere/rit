@@ -5,8 +5,8 @@ use std::string::String;
 #[derive(Debug)]
 
 pub struct BuildParams {
-    pub project_name: String,
-    pub output_name: String,
+    pub project_name: Option<String>,
+    pub output_name: Option<String>,
 }
 
 pub struct OpenPlaceParams {
@@ -27,7 +27,10 @@ pub fn init() -> anyhow::Result<Option<String>> {
 }
 
 pub fn build(params: &BuildParams) -> Option<String> {
-    let output = format!("build/{}.rbxl", params.output_name);
+    let output = format!(
+        "build/{}.rbxl",
+        params.output_name.clone().unwrap_or("default".to_string())
+    );
     let path = Path::new(&output).parent().unwrap();
     if !path.exists() {
         fs::create_dir_all(path).expect("failed to create directory");
@@ -36,12 +39,13 @@ pub fn build(params: &BuildParams) -> Option<String> {
         .arg("-c")
         .arg(format!(
             r#"rojo --version && rojo build "{}.project.json" -o "{}""#,
-            params.project_name, output,
+            params.project_name.clone().unwrap_or("default".to_string()),
+            output,
         ))
         .output()
         .expect("failed to execute process");
 
-    println!("Built project {}!", params.project_name);
+    println!("Built project {}!", output);
     Some(output)
 }
 
