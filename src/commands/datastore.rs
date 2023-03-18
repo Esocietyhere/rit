@@ -1,3 +1,4 @@
+use super::getenv;
 use crate::config::Config;
 use clap::{Args, Subcommand, ValueEnum};
 
@@ -24,8 +25,8 @@ pub enum DataStoreCommands {
         cursor: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
-        api_key: String,
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
     },
 
     /// List all entries in a DataStore
@@ -55,8 +56,8 @@ pub enum DataStoreCommands {
         cursor: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
-        api_key: String,
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
     },
 
     /// Get a DataStore entry
@@ -74,8 +75,8 @@ pub enum DataStoreCommands {
         key: String,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
-        api_key: String,
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
     },
 
     /// Set or create the value of a DataStore entry
@@ -113,8 +114,8 @@ pub enum DataStoreCommands {
         attributes: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
-        api_key: String,
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
     },
 
     /// Increment or create the value of a DataStore entry
@@ -144,8 +145,8 @@ pub enum DataStoreCommands {
         attributes: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
-        api_key: String,
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
     },
 
     /// Delete a DataStore entry
@@ -163,8 +164,8 @@ pub enum DataStoreCommands {
         key: String,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
-        api_key: String,
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
     },
 
     /// List all versions of a DataStore entry
@@ -202,8 +203,8 @@ pub enum DataStoreCommands {
         cursor: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
-        api_key: String,
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
     },
 
     /// Get the value of a specific entry version
@@ -225,8 +226,8 @@ pub enum DataStoreCommands {
         version_id: String,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
-        api_key: String,
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
     },
 }
 
@@ -264,7 +265,10 @@ impl DataStore {
                 cursor,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
+                let rbx_cloud = RbxCloud::new(
+                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
+                    UniverseId(universe_id()),
+                );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .list_stores(&DataStoreListStores {
@@ -288,7 +292,10 @@ impl DataStore {
                 scope,
                 all_scopes,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
+                let rbx_cloud = RbxCloud::new(
+                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
+                    UniverseId(universe_id()),
+                );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .list_entries(&DataStoreListEntries {
@@ -312,7 +319,10 @@ impl DataStore {
                 key,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
+                let rbx_cloud = RbxCloud::new(
+                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
+                    UniverseId(universe_id()),
+                );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .get_entry_string(&DataStoreGetEntry {
@@ -338,7 +348,10 @@ impl DataStore {
                 attributes,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
+                let rbx_cloud = RbxCloud::new(
+                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
+                    UniverseId(universe_id()),
+                );
                 let datastore = rbx_cloud.datastore();
                 let ids = u64_ids_to_roblox_ids(user_ids);
                 let res = datastore
@@ -368,7 +381,10 @@ impl DataStore {
                 attributes,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
+                let rbx_cloud = RbxCloud::new(
+                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
+                    UniverseId(universe_id()),
+                );
                 let datastore = rbx_cloud.datastore();
                 let ids = u64_ids_to_roblox_ids(user_ids);
                 let res = datastore
@@ -393,7 +409,10 @@ impl DataStore {
                 key,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
+                let rbx_cloud = RbxCloud::new(
+                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
+                    UniverseId(universe_id()),
+                );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .delete_entry(&DataStoreDeleteEntry {
@@ -419,7 +438,10 @@ impl DataStore {
                 cursor,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
+                let rbx_cloud = RbxCloud::new(
+                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
+                    UniverseId(universe_id()),
+                );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .list_entry_versions(&DataStoreListEntryVersions {
@@ -446,7 +468,10 @@ impl DataStore {
                 version_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
+                let rbx_cloud = RbxCloud::new(
+                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
+                    UniverseId(universe_id()),
+                );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .get_entry_version(&DataStoreGetEntryVersion {
