@@ -1,3 +1,4 @@
+use crate::config::Config;
 use clap::{Args, Subcommand, ValueEnum};
 
 use rbxcloud::rbx::{
@@ -21,10 +22,6 @@ pub enum DataStoreCommands {
         /// Cursor for the next set of data
         #[clap(short, long, value_parser)]
         cursor: Option<String>,
-
-        /// Universe ID of the experience
-        #[clap(short, long, value_parser)]
-        universe_id: u64,
 
         /// Roblox Open Cloud API Key
         #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
@@ -57,10 +54,6 @@ pub enum DataStoreCommands {
         #[clap(short, long, value_parser)]
         cursor: Option<String>,
 
-        /// Universe ID of the experience
-        #[clap(short, long, value_parser)]
-        universe_id: u64,
-
         /// Roblox Open Cloud API Key
         #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
         api_key: String,
@@ -79,10 +72,6 @@ pub enum DataStoreCommands {
         /// The key of the entry
         #[clap(short, long, value_parser)]
         key: String,
-
-        /// Universe ID of the experience
-        #[clap(short, long, value_parser)]
-        universe_id: u64,
 
         /// Roblox Open Cloud API Key
         #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
@@ -123,10 +112,6 @@ pub enum DataStoreCommands {
         #[clap(short = 't', long, value_parser)]
         attributes: Option<String>,
 
-        /// Universe ID of the experience
-        #[clap(short, long, value_parser)]
-        universe_id: u64,
-
         /// Roblox Open Cloud API Key
         #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
         api_key: String,
@@ -158,10 +143,6 @@ pub enum DataStoreCommands {
         #[clap(short = 't', long, value_parser)]
         attributes: Option<String>,
 
-        /// Universe ID of the experience
-        #[clap(short, long, value_parser)]
-        universe_id: u64,
-
         /// Roblox Open Cloud API Key
         #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
         api_key: String,
@@ -180,10 +161,6 @@ pub enum DataStoreCommands {
         /// The key of the entry
         #[clap(short, long, value_parser)]
         key: String,
-
-        /// Universe ID of the experience
-        #[clap(short, long, value_parser)]
-        universe_id: u64,
 
         /// Roblox Open Cloud API Key
         #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
@@ -224,10 +201,6 @@ pub enum DataStoreCommands {
         #[clap(short, long, value_parser)]
         cursor: Option<String>,
 
-        /// Universe ID of the experience
-        #[clap(short, long, value_parser)]
-        universe_id: u64,
-
         /// Roblox Open Cloud API Key
         #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
         api_key: String,
@@ -250,10 +223,6 @@ pub enum DataStoreCommands {
         /// The version of the key
         #[clap(short = 'i', long, value_parser)]
         version_id: String,
-
-        /// Universe ID of the experience
-        #[clap(short, long, value_parser)]
-        universe_id: u64,
 
         /// Roblox Open Cloud API Key
         #[clap(short, long, value_parser, env = "RBXCLOUD_API_KEY")]
@@ -282,6 +251,10 @@ fn u64_ids_to_roblox_ids(user_ids: Option<Vec<u64>>) -> Option<Vec<RobloxUserId>
     })
 }
 
+fn universe_id() -> u64 {
+    Config::new("main".to_string()).get_universe_id().unwrap()
+}
+
 impl DataStore {
     pub async fn run(self) -> anyhow::Result<Option<String>> {
         match self.command {
@@ -289,10 +262,9 @@ impl DataStore {
                 prefix,
                 limit,
                 cursor,
-                universe_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id));
+                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .list_stores(&DataStoreListStores {
@@ -311,13 +283,12 @@ impl DataStore {
                 prefix,
                 limit,
                 cursor,
-                universe_id,
                 api_key,
                 datastore_name,
                 scope,
                 all_scopes,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id));
+                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .list_entries(&DataStoreListEntries {
@@ -339,10 +310,9 @@ impl DataStore {
                 datastore_name,
                 scope,
                 key,
-                universe_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id));
+                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .get_entry_string(&DataStoreGetEntry {
@@ -366,10 +336,9 @@ impl DataStore {
                 data,
                 user_ids,
                 attributes,
-                universe_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id));
+                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
                 let datastore = rbx_cloud.datastore();
                 let ids = u64_ids_to_roblox_ids(user_ids);
                 let res = datastore
@@ -397,10 +366,9 @@ impl DataStore {
                 increment_by,
                 user_ids,
                 attributes,
-                universe_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id));
+                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
                 let datastore = rbx_cloud.datastore();
                 let ids = u64_ids_to_roblox_ids(user_ids);
                 let res = datastore
@@ -423,10 +391,9 @@ impl DataStore {
                 datastore_name,
                 scope,
                 key,
-                universe_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id));
+                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .delete_entry(&DataStoreDeleteEntry {
@@ -450,10 +417,9 @@ impl DataStore {
                 sort_order,
                 limit,
                 cursor,
-                universe_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id));
+                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .list_entry_versions(&DataStoreListEntryVersions {
@@ -478,10 +444,9 @@ impl DataStore {
                 scope,
                 key,
                 version_id,
-                universe_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id));
+                let rbx_cloud = RbxCloud::new(&api_key, UniverseId(universe_id()));
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .get_entry_version(&DataStoreGetEntryVersion {
