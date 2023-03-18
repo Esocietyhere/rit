@@ -10,7 +10,7 @@ pub struct BuildParams {
 }
 
 pub struct OpenPlaceParams {
-    pub file_name: Option<String>,
+    pub file_path: Option<String>,
 }
 
 pub struct SyncParams {
@@ -27,9 +27,10 @@ pub fn init() -> anyhow::Result<Option<String>> {
 }
 
 pub fn build(params: &BuildParams) -> Option<String> {
+    let project = params.project_name.clone().unwrap_or("default".to_string());
     let output = format!(
         "build/{}.rbxl",
-        params.output_name.clone().unwrap_or("default".to_string())
+        params.output_name.clone().unwrap_or(project.clone())
     );
     let path = Path::new(&output).parent().unwrap();
     if !path.exists() {
@@ -39,8 +40,7 @@ pub fn build(params: &BuildParams) -> Option<String> {
         .arg("-c")
         .arg(format!(
             r#"rojo --version && rojo build "{}.project.json" -o "{}""#,
-            params.project_name.clone().unwrap_or("default".to_string()),
-            output,
+            project, output,
         ))
         .output()
         .expect("failed to execute process");
@@ -50,10 +50,10 @@ pub fn build(params: &BuildParams) -> Option<String> {
 }
 
 pub fn open_place(params: &OpenPlaceParams) -> Option<String> {
-    let input = format!(
-        "build/{}.rbxl",
-        params.file_name.clone().unwrap_or("default".to_string())
-    );
+    let input = params
+        .file_path
+        .clone()
+        .unwrap_or(format!("build/{}.rbxl", "default"));
     let path = Path::new(&input);
     if !path.exists() {
         println!("File {} does not exist!", input);

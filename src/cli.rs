@@ -25,9 +25,9 @@ pub enum Command {
     },
     /// Open a place file
     Open {
-        /// The name of the place file to open
+        /// The path to the place file
         #[clap(short, long, value_parser)]
-        file_name: Option<String>,
+        file_path: Option<String>,
     },
     /// Builds the project and opens the place file
     Run {
@@ -66,18 +66,16 @@ impl Cli {
                 project_name,
                 output_name,
             })),
-            Command::Open { file_name } => Ok(open_place(&OpenPlaceParams { file_name })),
+            Command::Open { file_path } => Ok(open_place(&OpenPlaceParams { file_path })),
             Command::Run {
                 project_name,
                 output_name,
             } => {
-                build(&BuildParams {
-                    project_name: project_name.clone(),
-                    output_name: output_name.clone(),
-                });
-
                 open_place(&OpenPlaceParams {
-                    file_name: output_name,
+                    file_path: build(&BuildParams {
+                        project_name: project_name.clone(),
+                        output_name: output_name.clone(),
+                    }),
                 });
                 Ok(None)
             }
