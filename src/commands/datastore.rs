@@ -18,7 +18,7 @@ pub enum DataStoreCommands {
 
         /// Maximum number of items to return
         #[clap(short, long, value_parser)]
-        limit: u64,
+        limit: Option<u64>,
 
         /// Cursor for the next set of data
         #[clap(short, long, value_parser)]
@@ -49,7 +49,7 @@ pub enum DataStoreCommands {
 
         /// Maximum number of items to return
         #[clap(short, long, value_parser)]
-        limit: u64,
+        limit: Option<u64>,
 
         /// Cursor for the next set of data
         #[clap(short, long, value_parser)]
@@ -196,7 +196,7 @@ pub enum DataStoreCommands {
 
         /// Maximum number of items to return
         #[clap(short, long, value_parser)]
-        limit: u64,
+        limit: Option<u64>,
 
         /// Cursor for the next set of data
         #[clap(short, long, value_parser)]
@@ -273,7 +273,7 @@ impl DataStore {
                 let res = datastore
                     .list_stores(&DataStoreListStores {
                         cursor,
-                        limit: ReturnLimit(limit),
+                        limit: ReturnLimit(limit.unwrap_or(100)),
                         prefix,
                     })
                     .await;
@@ -303,7 +303,7 @@ impl DataStore {
                         scope,
                         all_scopes,
                         prefix,
-                        limit: ReturnLimit(limit),
+                        limit: ReturnLimit(limit.unwrap_or(100)),
                         cursor,
                     })
                     .await;
@@ -451,7 +451,7 @@ impl DataStore {
                         start_time,
                         end_time,
                         sort_order: format!("{sort_order:?}"),
-                        limit: ReturnLimit(limit),
+                        limit: ReturnLimit(limit.unwrap_or(100)),
                         cursor,
                     })
                     .await;
