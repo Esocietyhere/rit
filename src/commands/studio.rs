@@ -1,3 +1,5 @@
+use std::fs;
+use std::path::Path;
 use std::process::Command;
 #[derive(Debug)]
 
@@ -24,12 +26,16 @@ pub fn init() -> anyhow::Result<Option<String>> {
 }
 
 pub fn build(params: &BuildParams) -> anyhow::Result<Option<String>> {
+    let output = format!("build/{}.rbxl", params.output_name);
+    let path = Path::new(&output).parent().unwrap();
+    if !path.exists() {
+        fs::create_dir_all(path)?;
+    }
     Command::new("sh")
         .arg("-c")
         .arg(format!(
-            r#"mkdir -p build && rojo --version && rojo build "{}.project.json" -o "build/{}.rbxl""#,
-            params.project_name,
-            params.output_name,
+            r#"rojo --version && rojo build "{}.project.json" -o "{}""#,
+            params.project_name, output,
         ))
         .output()
         .expect("failed to execute process");

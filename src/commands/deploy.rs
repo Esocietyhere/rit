@@ -30,7 +30,7 @@ impl Config {
         Self { json, branch }
     }
 
-    pub fn get_universe_id(&self) -> (Result<u64, anyhow::Error>) {
+    pub fn get_universe_id(&self) -> Result<u64, anyhow::Error> {
         let universe_id = &self
             .json
             .get("deployment")

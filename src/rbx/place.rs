@@ -18,8 +18,7 @@ impl Place {
     }
 
     pub async fn publish(&self, name: &str, place_id: u64) -> () {
-        let deploy_directory = "build/deploy";
-        let path = format!("{}/{}.rbxlx", deploy_directory, name);
+        let path = format!("deploy/{}", name);
         let publish_version_type = PublishVersionType::Published;
 
         build(&BuildParams {
