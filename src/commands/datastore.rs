@@ -1,11 +1,14 @@
 use super::getenv;
 use crate::config::Config;
+use ansi_term::Colour;
 use clap::{Args, Subcommand, ValueEnum};
+use std::io::{stdin, stdout, Write};
 
 use rbxcloud::rbx::{
-    DataStoreDeleteEntry, DataStoreGetEntry, DataStoreGetEntryVersion, DataStoreIncrementEntry,
-    DataStoreListEntries, DataStoreListEntryVersions, DataStoreListStores, DataStoreSetEntry,
-    RbxCloud, ReturnLimit, RobloxUserId, UniverseId,
+    datastore::ListDataStoreEntry, DataStoreDeleteEntry, DataStoreGetEntry,
+    DataStoreGetEntryVersion, DataStoreIncrementEntry, DataStoreListEntries,
+    DataStoreListEntryVersions, DataStoreListStores, DataStoreSetEntry, RbxCloud, ReturnLimit,
+    RobloxUserId, UniverseId,
 };
 
 #[derive(Debug, Subcommand)]
@@ -256,6 +259,18 @@ fn universe_id() -> u64 {
     Config::new("main".to_string()).get_universe_id().unwrap()
 }
 
+fn format_data(datastores: Vec<ListDataStoreEntry>) -> String {
+    let mut result = String::new();
+    for store in datastores {
+        result.push_str(&format!(
+            "{}\nCreated: {}\n\n",
+            Colour::Yellow.paint(format!("datastore {}", store.name)),
+            store.created_time
+        ));
+    }
+    return result;
+}
+
 impl DataStore {
     pub async fn run(self) -> anyhow::Result<Option<String>> {
         match self.command {
@@ -270,17 +285,40 @@ impl DataStore {
                     UniverseId(universe_id()),
                 );
                 let datastore = rbx_cloud.datastore();
-                let res = datastore
-                    .list_stores(&DataStoreListStores {
-                        cursor,
-                        limit: ReturnLimit(limit.unwrap_or(100)),
-                        prefix,
-                    })
-                    .await;
-                match res {
-                    Ok(data) => Ok(Some(format!("{data:#?}"))),
-                    Err(err) => Err(err.into()),
+
+                let mut has_cursor = true;
+                let mut next_cursor = cursor.clone();
+
+                while has_cursor {
+                    let res = datastore
+                        .list_stores(&DataStoreListStores {
+                            cursor: next_cursor,
+                            limit: ReturnLimit(limit.unwrap_or(100)),
+                            prefix: prefix.clone(),
+                        })
+                        .await;
+                    match res {
+                        Ok(data) => {
+                            println!("{}", format_data(data.datastores));
+                            has_cursor = data.next_page_cursor.is_some();
+                            next_cursor = data.next_page_cursor;
+                        }
+                        Err(err) => return Err(err.into()),
+                    }
+                    print!("Press Enter to continue or 'q' to quit: ");
+                    let _ = stdout().flush();
+                    let mut input = String::new();
+                    let _ = stdin().read_line(&mut input);
+
+                    match input.trim() {
+                        "" => {
+                            print!("{}[2J", 27 as char);
+                        }
+                        "q" => break,
+                        _ => println!("Invalid input, quitting..."),
+                    }
                 }
+                Ok(None)
             }
 
             DataStoreCommands::List {
