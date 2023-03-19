@@ -276,7 +276,7 @@ fn format_keys(list_entry: Vec<ListEntriesKey>) -> String {
     for entry in list_entry {
         result.push_str(&format!(
             "{}\nScope: {}\n\n",
-            Colour::Yellow.paint(format!("Key {}", entry.key)),
+            Colour::Yellow.paint(format!("key {}", entry.key)),
             entry.scope
         ));
     }
