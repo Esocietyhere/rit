@@ -5,10 +5,10 @@ use clap::{Args, Subcommand, ValueEnum};
 use std::io::{stdin, stdout, Write};
 
 use rbxcloud::rbx::{
-    datastore::ListDataStoreEntry, DataStoreDeleteEntry, DataStoreGetEntry,
-    DataStoreGetEntryVersion, DataStoreIncrementEntry, DataStoreListEntries,
-    DataStoreListEntryVersions, DataStoreListStores, DataStoreSetEntry, RbxCloud, ReturnLimit,
-    RobloxUserId, UniverseId,
+    datastore::{ListDataStoreEntry, ListEntriesKey},
+    DataStoreDeleteEntry, DataStoreGetEntry, DataStoreGetEntryVersion, DataStoreIncrementEntry,
+    DataStoreListEntries, DataStoreListEntryVersions, DataStoreListStores, DataStoreSetEntry,
+    RbxCloud, ReturnLimit, RobloxUserId, UniverseId,
 };
 
 #[derive(Debug, Subcommand)]
@@ -259,13 +259,25 @@ fn universe_id() -> u64 {
     Config::new("main".to_string()).get_universe_id().unwrap()
 }
 
-fn format_data(datastores: Vec<ListDataStoreEntry>) -> String {
+fn format_stores(datastores: Vec<ListDataStoreEntry>) -> String {
     let mut result = String::new();
     for store in datastores {
         result.push_str(&format!(
             "{}\nCreated: {}\n\n",
             Colour::Yellow.paint(format!("datastore {}", store.name)),
             store.created_time
+        ));
+    }
+    return result;
+}
+
+fn format_keys(list_entry: Vec<ListEntriesKey>) -> String {
+    let mut result = String::new();
+    for entry in list_entry {
+        result.push_str(&format!(
+            "{}\nScope: {}\n\n",
+            Colour::Yellow.paint(format!("Key {}", entry.key)),
+            entry.scope
         ));
     }
     return result;
@@ -299,7 +311,7 @@ impl DataStore {
                         .await;
                     match res {
                         Ok(data) => {
-                            println!("{}", format_data(data.datastores));
+                            println!("{}", format_stores(data.datastores));
                             has_cursor = data.next_page_cursor.is_some();
                             next_cursor = data.next_page_cursor;
                         }
@@ -312,7 +324,7 @@ impl DataStore {
 
                     match input.trim() {
                         "" => {
-                            print!("{}[2J", 27 as char);
+                            print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
                         }
                         "q" => break,
                         _ => println!("Invalid input, quitting..."),
@@ -335,20 +347,43 @@ impl DataStore {
                     UniverseId(universe_id()),
                 );
                 let datastore = rbx_cloud.datastore();
-                let res = datastore
-                    .list_entries(&DataStoreListEntries {
-                        name: datastore_name,
-                        scope,
-                        all_scopes,
-                        prefix,
-                        limit: ReturnLimit(limit.unwrap_or(100)),
-                        cursor,
-                    })
-                    .await;
-                match res {
-                    Ok(data) => Ok(Some(format!("{data:#?}"))),
-                    Err(err) => Err(err.into()),
+
+                let mut has_cursor = true;
+                let mut next_cursor = cursor.clone();
+
+                while has_cursor {
+                    let res = datastore
+                        .list_entries(&DataStoreListEntries {
+                            name: datastore_name.clone(),
+                            scope: scope.clone(),
+                            all_scopes,
+                            cursor: next_cursor,
+                            limit: ReturnLimit(limit.unwrap_or(100)),
+                            prefix: prefix.clone(),
+                        })
+                        .await;
+                    match res {
+                        Ok(data) => {
+                            println!("{}", format_keys(data.keys));
+                            has_cursor = data.next_page_cursor.is_some();
+                            next_cursor = data.next_page_cursor;
+                        }
+                        Err(err) => return Err(err.into()),
+                    }
+                    print!("Press Enter to continue or 'q' to quit: ");
+                    let _ = stdout().flush();
+                    let mut input = String::new();
+                    let _ = stdin().read_line(&mut input);
+
+                    match input.trim() {
+                        "" => {
+                            print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
+                        }
+                        "q" => break,
+                        _ => println!("Invalid input, quitting..."),
+                    }
                 }
+                Ok(None)
             }
 
             DataStoreCommands::Get {
