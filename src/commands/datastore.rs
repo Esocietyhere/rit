@@ -255,8 +255,8 @@ fn u64_ids_to_roblox_ids(user_ids: Option<Vec<u64>>) -> Option<Vec<RobloxUserId>
     })
 }
 
-fn universe_id() -> u64 {
-    Config::new("main".to_string()).get_universe_id().unwrap()
+fn universe_id() -> UniverseId {
+    UniverseId(Config::new("main".to_string()).get_universe_id().unwrap())
 }
 
 fn format_stores(datastores: Vec<ListDataStoreEntry>) -> String {
@@ -294,7 +294,7 @@ impl DataStore {
             } => {
                 let rbx_cloud = RbxCloud::new(
                     &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    UniverseId(universe_id()),
+                    universe_id(),
                 );
                 let datastore = rbx_cloud.datastore();
 
@@ -347,7 +347,7 @@ impl DataStore {
             } => {
                 let rbx_cloud = RbxCloud::new(
                     &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    UniverseId(universe_id()),
+                    universe_id(),
                 );
                 let datastore = rbx_cloud.datastore();
 
@@ -400,7 +400,7 @@ impl DataStore {
             } => {
                 let rbx_cloud = RbxCloud::new(
                     &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    UniverseId(universe_id()),
+                    universe_id(),
                 );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
@@ -429,7 +429,7 @@ impl DataStore {
             } => {
                 let rbx_cloud = RbxCloud::new(
                     &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    UniverseId(universe_id()),
+                    universe_id(),
                 );
                 let datastore = rbx_cloud.datastore();
                 let ids = u64_ids_to_roblox_ids(user_ids);
@@ -462,7 +462,7 @@ impl DataStore {
             } => {
                 let rbx_cloud = RbxCloud::new(
                     &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    UniverseId(universe_id()),
+                    universe_id(),
                 );
                 let datastore = rbx_cloud.datastore();
                 let ids = u64_ids_to_roblox_ids(user_ids);
@@ -490,7 +490,7 @@ impl DataStore {
             } => {
                 let rbx_cloud = RbxCloud::new(
                     &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    UniverseId(universe_id()),
+                    universe_id(),
                 );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
@@ -519,7 +519,7 @@ impl DataStore {
             } => {
                 let rbx_cloud = RbxCloud::new(
                     &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    UniverseId(universe_id()),
+                    universe_id(),
                 );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
@@ -549,7 +549,7 @@ impl DataStore {
             } => {
                 let rbx_cloud = RbxCloud::new(
                     &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    UniverseId(universe_id()),
+                    universe_id(),
                 );
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
