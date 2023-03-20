@@ -368,10 +368,13 @@ impl DataStore {
                     match res {
                         Ok(data) => {
                             println!("{}", format_keys(data.keys));
-                            has_cursor = data.next_page_cursor.is_some();
+                            has_cursor = data.next_page_cursor != Some("".to_string());
                             next_cursor = data.next_page_cursor;
                         }
                         Err(err) => return Err(err.into()),
+                    }
+                    if !has_cursor {
+                        break;
                     }
                     print!("Press Enter to continue or 'q' to quit: ");
                     let _ = stdout().flush();
