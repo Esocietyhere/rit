@@ -30,13 +30,13 @@ impl Config {
             .get("universes")
             .unwrap()
             .get(&self.branch);
-        return match universe_id {
+        match universe_id {
             Some(v) => Ok(Some(v).unwrap().as_u64().unwrap()),
             None => Err(anyhow::anyhow!(
                 "No universe id found for branch {}",
                 &self.branch
             )),
-        };
+        }
     }
 
     pub fn get_places(
@@ -49,12 +49,12 @@ impl Config {
             .get("places")
             .unwrap()
             .get(&self.branch);
-        return match places {
+        match places {
             Some(v) => Ok(Some(v).unwrap().as_object().unwrap()),
             None => Err(anyhow::anyhow!(
                 "No places found for branch {}",
                 &self.branch
             )),
-        };
+        }
     }
 }

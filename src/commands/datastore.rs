@@ -268,7 +268,7 @@ fn format_stores(datastores: Vec<ListDataStoreEntry>) -> String {
             store.created_time
         ));
     }
-    return result;
+    result
 }
 
 fn format_keys(list_entry: Vec<ListEntriesKey>) -> String {
@@ -280,7 +280,7 @@ fn format_keys(list_entry: Vec<ListEntriesKey>) -> String {
             entry.scope
         ));
     }
-    return result;
+    result
 }
 
 impl DataStore {

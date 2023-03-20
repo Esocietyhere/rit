@@ -58,15 +58,15 @@ pub fn open_place(params: &OpenPlaceParams) -> Option<String> {
     let path = Path::new(&input);
     if !path.exists() {
         println!("File {} does not exist!", input);
-        return None;
     };
-    if cfg!(target_os = "windows") {
+
+    if cfg!(target_os = "wsl") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(r#"start "{}""#, input))
+            .arg(format!(r#"powershell.exe -c start "{}""#, input))
             .output()
             .expect("failed to execute process");
-    } else if cfg!(target_os = "wsl") {
+    } else if cfg!(target_os = "windows") {
         Command::new("sh")
             .arg("-c")
             .arg(format!(r#"start "{}""#, input))

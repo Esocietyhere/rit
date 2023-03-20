@@ -75,8 +75,8 @@ impl Cli {
             } => {
                 open_place(&OpenPlaceParams {
                     file_path: build(&BuildParams {
-                        project_name: project_name.clone(),
-                        output_name: output_name.clone(),
+                        project_name,
+                        output_name,
                     }),
                 });
                 Ok(None)

@@ -15,7 +15,7 @@ impl Place {
         }
     }
 
-    pub async fn publish(&self, path: &str, place_id: u64) -> () {
+    pub async fn publish(&self, path: &str, place_id: u64) {
         let publish_version_type = PublishVersionType::Published;
 
         // Define RbxCloud instance:

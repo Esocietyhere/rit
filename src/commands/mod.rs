@@ -9,12 +9,9 @@ pub use devtools::*;
 pub use studio::*;
 
 pub fn getenv(api_key: Option<String>, name: String) -> String {
-    let value = match api_key {
+    match api_key {
         Some(v) => v,
-        None => std::env::var(name.clone()).expect(&format!(
-            "environment variable \"{}\" is not set",
-            name.clone()
-        )),
-    };
-    return value;
+        None => std::env::var(name.clone())
+            .unwrap_or_else(|_| panic!("environment variable \"{}\" is not set", name)),
+    }
 }
