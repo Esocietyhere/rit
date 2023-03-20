@@ -1,14 +1,12 @@
 {
-    "deployment": {
-        "universes": {
-            "main": 4458588307
-        },
-        "places": {
-            "main": {
-                "default": 12721091425,
-                "default2": 12721091425,
-                "default3": 12721091425
-            }
-        }
+  "deployment": {
+    "universes": {
+      "main": 4458588307
+    },
+    "places": {
+      "main": {
+        "default": 12721091425
+      }
     }
+  }
 }
