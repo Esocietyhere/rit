@@ -12,7 +12,7 @@ pub struct Cli {
 pub enum Command {
     /// Initialize the project with Rojo, Wally, and Aftman
     Init,
-    /// Build the rojo project 
+    /// Build the rojo project
     Build {
         /// The name of the project to build
         #[clap(short, long, value_parser)]
@@ -27,7 +27,7 @@ pub enum Command {
         #[clap(short, long, value_parser)]
         file_path: Option<String>,
     },
-    /// Builds the project and opens it in Roblox Studio
+    /// Build the project and open it in Roblox Studio
     Run {
         /// The name of the project to build
         #[clap(short, long, value_parser)]
@@ -36,7 +36,7 @@ pub enum Command {
         #[clap(short, long, value_parser)]
         output_name: Option<String>,
     },
-    /// Builds all projects and deploys them to Roblox
+    /// Build all projects and deploy them to Roblox
     Deploy {
         /// The branch to deploy to
         #[clap(short, long, value_parser)]
@@ -45,14 +45,14 @@ pub enum Command {
         #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
         api_key: Option<String>,
     },
-    /// Syncs images to the Roblox CDN with Tarmac
+    /// Sync images to the Roblox CDN with Tarmac
     Sync {
         #[clap(short, long, value_parser)]
         auth: Option<String>,
     },
     /// Manage the datastore
     Datastore(DataStore),
-    /// Installs tarmac, remodel, rojo, wally, selene, and stylua
+    /// Install tarmac, remodel, rojo, wally, selene, and stylua
     Devtools,
 }
 
