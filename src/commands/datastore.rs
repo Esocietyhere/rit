@@ -292,10 +292,8 @@ impl DataStore {
                 cursor,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(
-                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    universe_id(),
-                );
+                let rbx_cloud =
+                    RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
 
                 let mut has_cursor = true;
@@ -345,10 +343,8 @@ impl DataStore {
                 scope,
                 all_scopes,
             } => {
-                let rbx_cloud = RbxCloud::new(
-                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    universe_id(),
-                );
+                let rbx_cloud =
+                    RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
 
                 let mut has_cursor = true;
@@ -398,10 +394,8 @@ impl DataStore {
                 key,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(
-                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    universe_id(),
-                );
+                let rbx_cloud =
+                    RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .get_entry_string(&DataStoreGetEntry {
@@ -427,10 +421,8 @@ impl DataStore {
                 attributes,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(
-                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    universe_id(),
-                );
+                let rbx_cloud =
+                    RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
                 let ids = u64_ids_to_roblox_ids(user_ids);
                 let res = datastore
@@ -460,10 +452,8 @@ impl DataStore {
                 attributes,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(
-                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    universe_id(),
-                );
+                let rbx_cloud =
+                    RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
                 let ids = u64_ids_to_roblox_ids(user_ids);
                 let res = datastore
@@ -488,10 +478,8 @@ impl DataStore {
                 key,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(
-                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    universe_id(),
-                );
+                let rbx_cloud =
+                    RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .delete_entry(&DataStoreDeleteEntry {
@@ -517,10 +505,8 @@ impl DataStore {
                 cursor,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(
-                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    universe_id(),
-                );
+                let rbx_cloud =
+                    RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .list_entry_versions(&DataStoreListEntryVersions {
@@ -547,10 +533,8 @@ impl DataStore {
                 version_id,
                 api_key,
             } => {
-                let rbx_cloud = RbxCloud::new(
-                    &getenv(api_key, "OPENCLOUD_KEY".to_string()),
-                    universe_id(),
-                );
+                let rbx_cloud =
+                    RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
                 let res = datastore
                     .get_entry_version(&DataStoreGetEntryVersion {
