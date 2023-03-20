@@ -1,6 +1,10 @@
-<h1 align="center">RIT</h1>
-<div align="center">
+<h1>RIT &emsp; Roblox Command-line Tool</h1>
+<div>
 	<a href="https://github.com/Esocietyhere/rit/actions"><img src="https://github.com/Esocietyhere/rit/workflows/CI/badge.svg" alt="CI" /></a>
+</div>
+
+<div>
+	Rit is a command-line tool for Roblox developers inspired by the <a href="https://github.com/sleitnick/rbxcloud">Roblox Open Cloud API</a>.
 </div>
 
 ## Install CLI
