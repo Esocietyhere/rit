@@ -10,11 +10,9 @@ pub struct Cli {
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
-    /// Initialize a new project
+    /// Initialize the project with Rojo, Wally, and Aftman
     Init,
-    /// Installs the configured devtools
-    Devtools,
-    /// Publish an experience
+    /// Build the rojo project 
     Build {
         /// The name of the project to build
         #[clap(short, long, value_parser)]
@@ -23,13 +21,13 @@ pub enum Command {
         #[clap(short, long, value_parser)]
         output_name: Option<String>,
     },
-    /// Open a place file
+    /// Open a place file in Roblox Studio
     Open {
         /// The path to the place file
         #[clap(short, long, value_parser)]
         file_path: Option<String>,
     },
-    /// Builds the project and opens the place file
+    /// Builds the project and opens it in Roblox Studio
     Run {
         /// The name of the project to build
         #[clap(short, long, value_parser)]
@@ -38,7 +36,7 @@ pub enum Command {
         #[clap(short, long, value_parser)]
         output_name: Option<String>,
     },
-    /// Builds the project and deploys it to the Roblox CDN
+    /// Builds all projects and deploys them to Roblox
     Deploy {
         /// The branch to deploy to
         #[clap(short, long, value_parser)]
@@ -47,13 +45,15 @@ pub enum Command {
         #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
         api_key: Option<String>,
     },
-    /// Syncs images to the Roblox CDN
+    /// Syncs images to the Roblox CDN with Tarmac
     Sync {
         #[clap(short, long, value_parser)]
         auth: Option<String>,
     },
     /// Manage the datastore
     Datastore(DataStore),
+    /// Installs tarmac, remodel, rojo, wally, selene, and stylua
+    Devtools,
 }
 
 impl Cli {
