@@ -2,7 +2,6 @@ use clap::Parser;
 use rbxcloud::rbx::{PlaceId, PublishVersionType, RbxCloud, UniverseId};
 
 #[derive(Debug, Parser)]
-#[clap(name = "experience", about = "Manage experiences")]
 pub struct Place {
     pub api_key: String,
     pub universe_id: u64,
