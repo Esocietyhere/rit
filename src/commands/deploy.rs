@@ -2,7 +2,7 @@ use crate::commands::{build, BuildParams};
 use crate::config::Config;
 use crate::rbx::Place;
 use anyhow::Ok;
-use std::env;
+use super::getenv;
 
 pub struct DeployParams {
     pub branch_name: Option<String>,
@@ -10,14 +10,10 @@ pub struct DeployParams {
 }
 
 pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
+    let api_key = getenv(params.api_key.clone(), "OPENCLOUD_KEY".to_string());
     let branch = match params.branch_name.clone() {
         Some(v) => v,
         None => "main".to_string(),
-    };
-
-    let api_key = match params.api_key.clone() {
-        Some(v) => v,
-        None => env::var("OPENCLOUD_KEY").expect("OPENCLOUD_KEY not set"),
     };
 
     println!("Publishing to {} universe", branch.clone());
