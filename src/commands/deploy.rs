@@ -19,7 +19,7 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
     println!("Publishing to {} universe", branch.clone());
 
     let config = Config::new(branch);
-    let universe_id = config.get_universe_id().unwrap().clone();
+    let universe_id = config.get_universe_id().unwrap();
     let places = config.get_places();
 
     let place = Place::new(&api_key, universe_id);
