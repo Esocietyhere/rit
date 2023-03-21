@@ -8,10 +8,10 @@ pub fn devtools() -> anyhow::Result<Option<String>> {
         .output()
         .expect("Failed to execute command");
 
-    // Add roblox/tarmac@latest
+    // Add roblox/tarmac@0.7.0
     Command::new("aftman")
         .arg("add")
-        .arg("roblox/tarmac@latest")
+        .arg("roblox/tarmac@0.7.0")
         .output()
         .expect("Failed to execute command");
 
@@ -22,10 +22,10 @@ pub fn devtools() -> anyhow::Result<Option<String>> {
         .output()
         .expect("Failed to execute command");
 
-    // Add rojo-rbx/remodel@latest
+    // Add rojo-rbx/remodel@0.11.0
     Command::new("aftman")
         .arg("add")
-        .arg("rojo-rbx/remodel@latest")
+        .arg("rojo-rbx/remodel@0.11.0")
         .output()
         .expect("Failed to execute command");
 
@@ -36,10 +36,10 @@ pub fn devtools() -> anyhow::Result<Option<String>> {
         .output()
         .expect("Failed to execute command");
 
-    // Add rojo-rbx/rojo@latest
+    // Add rojo-rbx/rojo@7.2.1
     Command::new("aftman")
         .arg("add")
-        .arg("rojo-rbx/rojo@latest")
+        .arg("rojo-rbx/rojo@7.2.1")
         .output()
         .expect("Failed to execute command");
 
@@ -50,10 +50,10 @@ pub fn devtools() -> anyhow::Result<Option<String>> {
         .output()
         .expect("Failed to execute command");
 
-    // Add upliftgames/wally@latest
+    // Add upliftgames/wally@0.3.1
     Command::new("aftman")
         .arg("add")
-        .arg("upliftgames/wally@latest")
+        .arg("upliftgames/wally@0.3.1")
         .output()
         .expect("Failed to execute command");
 
@@ -64,10 +64,10 @@ pub fn devtools() -> anyhow::Result<Option<String>> {
         .output()
         .expect("Failed to execute command");
 
-    // Add kampfkarren/selene@latest
+    // Add kampfkarren/selene@0.25.0
     Command::new("aftman")
         .arg("add")
-        .arg("kampfkarren/selene@latest")
+        .arg("kampfkarren/selene@0.25.0")
         .output()
         .expect("Failed to execute command");
 
@@ -78,10 +78,10 @@ pub fn devtools() -> anyhow::Result<Option<String>> {
         .output()
         .expect("Failed to execute command");
 
-    // Add johnnymorganz/stylua@latest
+    // Add johnnymorganz/stylua@0.25.0
     Command::new("aftman")
         .arg("add")
-        .arg("johnnymorganz/stylua@latest")
+        .arg("johnnymorganz/stylua@0.17.0")
         .output()
         .expect("Failed to execute command");
 
