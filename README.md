@@ -1,7 +1,7 @@
 # RIT - Roblox Command-line Tool &emsp; ![Logo](100x100.png)
 
-[![CI](https://github.com/Esocietyhere/rit/workflows/CI/badge.svg)](https://github.com/Esocietyhere/rit/actions/workflows/ci.yaml)
-[![Release](https://github.com/Esocietyhere/rit/actions/workflows/release.yaml/badge.svg?event=push)](https://github.com/Esocietyhere/rit/actions/workflows/release.yaml)
+[![CI](https://github.com/Esocietyhere/rit/workflows/CI/badge.svg)](https://github.com/Esocietyhere/rit/actions/workflows/ci.yml)
+[![Release](https://github.com/Esocietyhere/rit/actions/workflows/release.yml/badge.svg?event=push)](https://github.com/Esocietyhere/rit/actions/workflows/release.yml)
 
 Rit is a command-line tool that helps you manage your Roblox projects. It simplifies the process of uploading your project to Roblox, and makes it easy to build and open your Rojo projects. It can be configured to deploy between multiple experiences and places in the same project.
 
