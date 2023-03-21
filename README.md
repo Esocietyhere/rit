@@ -38,7 +38,3 @@ You have two versions of the same game: A staging version and a production versi
 ```
 
 Then, you can use the `rit deploy -b [BRANCH_NAME]` command to deploy to either of the environments.
-
-```sh
-
-```
