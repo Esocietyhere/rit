@@ -6,6 +6,7 @@ on:
 
 jobs:
   create-release:
+    permissions: write-all
     name: Create Release
     runs-on: ubuntu-latest
     outputs:
@@ -72,12 +73,7 @@ jobs:
       - name: Build Release
         run: cargo build --release --locked --verbose --target ${{ matrix.target }}
         env:
-          # Build into a known directory so we can find our build artifact more
-          # easily.
           CARGO_TARGET_DIR: output
-
-          # On platforms that use OpenSSL, ensure it is statically linked to
-          # make binaries more portable.
           OPENSSL_STATIC: 1
 
       - name: Create Release Archive
