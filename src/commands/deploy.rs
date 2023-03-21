@@ -18,7 +18,7 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
 
     println!("Publishing to {} universe", branch.clone());
 
-    let config = Config::new(branch);
+    let config = Config::new(branch.clone());
     let universe_id = config.get_universe_id().unwrap();
     let places = config.get_places();
 
@@ -35,8 +35,9 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
         place.publish(&path, place_id.as_u64().unwrap()).await;
     }
 
+    let topic = format!("updates-{}", branch);
     Message::new(&api_key, universe_id)
-        .publish("deploy", "Deployed")
+        .publish(&topic, "update")
         .await
         .ok();
     Ok(None)
