@@ -1,4 +1,4 @@
-# RIT - Roblox Command-line Tool &emsp; ![Logo](icon.png)
+# RIT - Roblox Command-line Tool &emsp; ![Logo](100x100.png)
 
 [![CI](https://github.com/Esocietyhere/rit/workflows/CI/badge.svg)](https://github.com/Esocietyhere/rit/actions/workflows/ci.yaml)
 
