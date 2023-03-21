@@ -1,7 +1,7 @@
 use super::getenv;
 use crate::commands::{build, BuildParams};
 use crate::config::Config;
-use crate::rbx::Place;
+use crate::rbx::{Message, Place};
 use anyhow::Ok;
 
 pub struct DeployParams {
@@ -19,10 +19,10 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
     println!("Publishing to {} universe", branch.clone());
 
     let config = Config::new(branch);
-    let universe_id = config.get_universe_id();
+    let universe_id = config.get_universe_id().unwrap().clone();
     let places = config.get_places();
 
-    let place = Place::new(&api_key, universe_id.unwrap());
+    let place = Place::new(&api_key, universe_id);
 
     for (place_name, place_id) in places.unwrap().iter() {
         let deploy_dir = format!("deploy/{}", place_name);
@@ -34,5 +34,10 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
 
         place.publish(&path, place_id.as_u64().unwrap()).await;
     }
+
+    Message::new(&api_key, universe_id)
+        .publish("deploy", "Deployed")
+        .await
+        .ok();
     Ok(None)
 }
