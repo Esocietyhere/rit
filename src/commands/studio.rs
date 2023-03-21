@@ -46,7 +46,6 @@ pub fn build(params: &BuildParams) -> Option<String> {
         ))
         .output()
         .expect("failed to execute process");
-
     Some(output)
 }
 
