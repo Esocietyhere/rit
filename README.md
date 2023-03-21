@@ -15,12 +15,12 @@ Inspired by the Roblox Open Cloud API using [Rbxcloud](https://github.com/Sleitn
 Run the `aftman add` command within your project directory. This will add `rit` to the project's `aftman.toml` file (or create one if it doesn't yet exist).
 
 ```sh
-$ aftman add Esocietyhere/rit@0.1.0
+$ aftman add --global Esocietyhere/rit@0.1.0
 ```
 
 ## Example Case
 
-You have two versions of the same game: A staging version and a production version. You want to be able to deploy to both of them at the same time, but you don't want to have to change the configuration every time you want to deploy between the staging and production environment. You can use `rit` with a config.json at the root of your project which includes multiple experience IDs and place IDs.
+If you have a game that has both a staging and production version and you frequently need to deploy updates to both versions, it can be a hassle to manually configure the settings each time. However, you can streamline the process by using `rit` with a `config.json` file at the root of your project. This file can contain multiple experience IDs and place IDs, allowing you to easily switch between different environments without having to modify the configuration every time you deploy.
 
 ```json
 {
@@ -37,4 +37,4 @@ You have two versions of the same game: A staging version and a production versi
 }
 ```
 
-Then, you can use the `rit deploy -b [BRANCH_NAME]` command to deploy to either of the environments.
+Then, you can use the `rit deploy -b [BRANCH_NAME]` command to deploy to the specified branch. If you don't specify a branch, it will default to `main`.
