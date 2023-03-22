@@ -1,11 +1,13 @@
+mod format;
+
 use super::getenv;
 use crate::config::Config;
-use ansi_term::Colour;
 use clap::{Args, Subcommand, ValueEnum};
 use std::io::{stdin, stdout, Write};
 
+use format::{format_datastore_entry, format_datastore_entry_version, format_datastore_store};
+
 use rbxcloud::rbx::{
-    datastore::{ListDataStoresResponse, ListEntriesResponse, ListEntryVersionsResponse},
     DataStoreDeleteEntry, DataStoreGetEntry, DataStoreGetEntryVersion, DataStoreIncrementEntry,
     DataStoreListEntries, DataStoreListEntryVersions, DataStoreListStores, DataStoreSetEntry,
     RbxCloud, ReturnLimit, RobloxUserId, UniverseId,
@@ -259,46 +261,6 @@ fn universe_id() -> UniverseId {
     UniverseId(Config::new("main".to_string()).get_universe_id().unwrap())
 }
 
-fn format_stores(response: ListDataStoresResponse) -> String {
-    let mut result = String::new();
-    for store in response.datastores {
-        result.push_str(&format!(
-            "{}\nCreated: {}\n\n",
-            Colour::Yellow.paint(format!("datastore {}", store.name)),
-            store.created_time
-        ));
-    };
-    result
-}
-
-fn format_keys(response: ListEntriesResponse) -> String {
-    let mut result = String::new();
-    for entry in response.keys {
-        result.push_str(&format!(
-            "{}\nScope: {}\n\n",
-            Colour::Yellow.paint(format!("key {}", entry.key)),
-            entry.scope
-        ));
-    };
-    result
-}
-
-fn format_versions(response: ListEntryVersionsResponse) -> String {
-    let mut result = String::new();
-    for entry in response.versions {
-        let status = if entry.deleted { Colour::Red.paint("DELETING") } else { Colour::Green.paint("ACTIVE") };
-        result.push_str(&format!(
-            "{} ({})\nLength:  {}\nCreated: {}\n\n    Object Created: {}\n\n",
-            Colour::Yellow.paint(format!("version {}", entry.version)),
-            status,
-            entry.content_length,
-            entry.created_time,
-            entry.object_created_time
-        ));
-    };
-    result
-}
-
 impl DataStore {
     pub async fn run(self) -> anyhow::Result<Option<String>> {
         match self.command {
@@ -327,7 +289,7 @@ impl DataStore {
                         Ok(data) => {
                             has_cursor = data.next_page_cursor.clone() != Some("".to_string());
                             next_cursor = data.next_page_cursor.clone();
-                            println!("{}", format_stores(data));
+                            println!("{}", format_datastore_store(data));
                         }
                         Err(err) => return Err(err.into()),
                     }
@@ -381,7 +343,7 @@ impl DataStore {
                         Ok(data) => {
                             has_cursor = data.next_page_cursor.clone() != Some("".to_string());
                             next_cursor = data.next_page_cursor.clone();
-                            println!("{}", format_keys(data));
+                            println!("{}", format_datastore_entry(data));
                         }
                         Err(err) => return Err(err.into()),
                     }
@@ -546,7 +508,7 @@ impl DataStore {
                         Ok(data) => {
                             has_cursor = data.next_page_cursor.clone() != Some("".to_string());
                             next_cursor = data.next_page_cursor.clone();
-                            println!("{}", format_versions(data));
+                            println!("{}", format_datastore_entry_version(data));
                         }
                         Err(err) => return Err(err.into()),
                     }
