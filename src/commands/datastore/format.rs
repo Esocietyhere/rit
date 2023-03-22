@@ -1,6 +1,6 @@
 use ansi_term::Colour;
-use rbxcloud::rbx::{
-    datastore::{ListDataStoresResponse, ListEntriesResponse, ListEntryVersionsResponse},
+use rbxcloud::rbx::datastore::{
+    ListDataStoresResponse, ListEntriesResponse, ListEntryVersionsResponse,
 };
 
 pub fn format_datastore_store(response: ListDataStoresResponse) -> String {
@@ -11,7 +11,7 @@ pub fn format_datastore_store(response: ListDataStoresResponse) -> String {
             Colour::Yellow.paint(format!("datastore {}", store.name)),
             store.created_time
         ));
-    };
+    }
     result
 }
 
@@ -23,14 +23,18 @@ pub fn format_datastore_entry(response: ListEntriesResponse) -> String {
             Colour::Yellow.paint(format!("key {}", entry.key)),
             entry.scope
         ));
-    };
+    }
     result
 }
 
 pub fn format_datastore_entry_version(response: ListEntryVersionsResponse) -> String {
     let mut result = String::new();
     for entry in response.versions {
-        let status = if entry.deleted { Colour::Red.paint("DELETING") } else { Colour::Green.paint("ACTIVE") };
+        let status = if entry.deleted {
+            Colour::Red.paint("DELETING")
+        } else {
+            Colour::Green.paint("ACTIVE")
+        };
         result.push_str(&format!(
             "{} ({})\nLength:  {}\nCreated: {}\n\n    Object Created: {}\n\n",
             Colour::Yellow.paint(format!("version {}", entry.version)),
@@ -39,6 +43,6 @@ pub fn format_datastore_entry_version(response: ListEntryVersionsResponse) -> St
             entry.created_time,
             entry.object_created_time
         ));
-    };
+    }
     result
 }
