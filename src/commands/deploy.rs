@@ -6,6 +6,7 @@ use anyhow::Ok;
 
 pub struct DeployParams {
     pub branch_name: Option<String>,
+    pub message: Option<String>,
     pub api_key: Option<String>,
 }
 
@@ -35,9 +36,11 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
         place.publish(&path, place_id.as_u64().unwrap()).await;
     }
 
-    let topic = format!("updates-{}", branch);
-    Message::new(&api_key, universe_id)
-        .publish(&topic, "update")
-        .await;
+    if !params.message.is_none() {
+        let topic = format!("updates-{}", branch);
+        Message::new(&api_key, universe_id)
+            .publish(&topic, &params.message.clone().unwrap())
+            .await;
+    }
     Ok(None)
 }

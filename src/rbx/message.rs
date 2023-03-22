@@ -20,6 +20,6 @@ impl Message {
         let messaging = cloud.messaging(topic);
 
         messaging.publish(data).await.ok();
-        println!("Published message to topic: {}", topic);
+        println!("Published message \"{}\" to topic: {}", data, topic);
     }
 }

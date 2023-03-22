@@ -43,6 +43,9 @@ pub enum Command {
         /// The branch to deploy to
         #[clap(short, long, value_parser)]
         branch_name: Option<String>,
+        /// The deploy message
+        #[clap(short, long, value_parser)]
+        message: Option<String>,
         /// The Roblox API key
         #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
         api_key: Option<String>,
@@ -98,10 +101,12 @@ impl Cli {
             }
             Command::Deploy {
                 branch_name,
+                message,
                 api_key,
             } => {
                 deploy(&DeployParams {
                     branch_name,
+                    message,
                     api_key,
                 })
                 .await
