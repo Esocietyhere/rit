@@ -286,10 +286,11 @@ fn format_keys(response: ListEntriesResponse) -> String {
 fn format_versions(response: ListEntryVersionsResponse) -> String {
     let mut result = String::new();
     for entry in response.versions {
+        let status = if entry.deleted { Colour::Red.paint("DELETING") } else { Colour::Green.paint("ACTIVE") };
         result.push_str(&format!(
-            "{}\nDeleted: {}\nContent Length: {}\nCreated: {}\nObject Created: {}\n\n",
+            "{} ({})\nLength:  {}\nCreated: {}\n\n    Object Created: {}\n\n",
             Colour::Yellow.paint(format!("version {}", entry.version)),
-            entry.deleted,
+            status,
             entry.content_length,
             entry.created_time,
             entry.object_created_time
