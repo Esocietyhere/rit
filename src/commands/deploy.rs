@@ -36,7 +36,7 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
         place.publish(&path, place_id.as_u64().unwrap()).await;
     }
 
-    if !params.message.is_none() {
+    if params.message.is_some() {
         let topic = format!("updates-{}", branch);
         Message::new(&api_key, universe_id)
             .publish(&topic, &params.message.clone().unwrap())
