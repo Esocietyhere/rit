@@ -15,10 +15,10 @@ impl Message {
         }
     }
 
-    pub async fn publish(&self, topic: &str, text: &str) -> Result<(), Error> {
+    pub async fn publish(&self, topic: &str, data: &str) -> Result<(), Error> {
         let cloud = RbxCloud::new(&self.api_key, UniverseId(self.universe_id));
         let messaging = cloud.messaging(topic);
 
-        messaging.publish(text).await
+        messaging.publish(data).await
     }
 }

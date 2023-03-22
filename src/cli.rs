@@ -12,6 +12,8 @@ pub struct Cli {
 pub enum Command {
     /// Initialize the project with Rojo, Wally, and Aftman
     Init,
+    /// Install tarmac, remodel, rojo, wally, selene, and stylua
+    Devtools,
     /// Build the rojo project
     Build {
         /// The name of the project to build
@@ -50,10 +52,23 @@ pub enum Command {
         #[clap(short, long, value_parser)]
         auth: Option<String>,
     },
+    /// Send the provided message to all subscribers to the topic
+    Event {
+        /// The branch to send the message to
+        #[clap(short, long, value_parser)]
+        branch_name: Option<String>,
+        /// Determines where the message is sent.
+        #[clap(short, long, value_parser)]
+        topic: Option<String>,
+        /// The data to include in the message.
+        #[clap(short, long, value_parser)]
+        message: Option<String>,
+        /// The Roblox API key
+        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        api_key: Option<String>,
+    },
     /// Manage the datastore
     Datastore(DataStore),
-    /// Install tarmac, remodel, rojo, wally, selene, and stylua
-    Devtools,
 }
 
 impl Cli {
@@ -92,6 +107,20 @@ impl Cli {
                 .await
             }
             Command::Sync { auth } => img_sync(&SyncParams { auth }),
+            Command::Event {
+                branch_name,
+                topic,
+                message,
+                api_key,
+            } => {
+                event(&EventParams {
+                    branch_name,
+                    topic,
+                    message,
+                    api_key,
+                })
+                .await
+            }
             Command::Datastore(command) => command.run().await,
         }
     }
