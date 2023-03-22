@@ -5,7 +5,7 @@ use clap::{Args, Subcommand, ValueEnum};
 use std::io::{stdin, stdout, Write};
 
 use rbxcloud::rbx::{
-    datastore::{ListDataStoreEntry, ListEntriesKey},
+    datastore::{ListDataStoresResponse, ListEntriesResponse, ListEntryVersionsResponse},
     DataStoreDeleteEntry, DataStoreGetEntry, DataStoreGetEntryVersion, DataStoreIncrementEntry,
     DataStoreListEntries, DataStoreListEntryVersions, DataStoreListStores, DataStoreSetEntry,
     RbxCloud, ReturnLimit, RobloxUserId, UniverseId,
@@ -195,7 +195,7 @@ pub enum DataStoreCommands {
 
         /// Sort order
         #[clap(short = 'o', long, value_enum)]
-        sort_order: ListEntrySortOrder,
+        sort_order: Option<ListEntrySortOrder>,
 
         /// Maximum number of items to return
         #[clap(short, long, value_parser)]
@@ -259,27 +259,42 @@ fn universe_id() -> UniverseId {
     UniverseId(Config::new("main".to_string()).get_universe_id().unwrap())
 }
 
-fn format_stores(datastores: Vec<ListDataStoreEntry>) -> String {
+fn format_stores(response: ListDataStoresResponse) -> String {
     let mut result = String::new();
-    for store in datastores {
+    for store in response.datastores {
         result.push_str(&format!(
             "{}\nCreated: {}\n\n",
             Colour::Yellow.paint(format!("datastore {}", store.name)),
             store.created_time
         ));
-    }
+    };
     result
 }
 
-fn format_keys(list_entry: Vec<ListEntriesKey>) -> String {
+fn format_keys(response: ListEntriesResponse) -> String {
     let mut result = String::new();
-    for entry in list_entry {
+    for entry in response.keys {
         result.push_str(&format!(
             "{}\nScope: {}\n\n",
             Colour::Yellow.paint(format!("key {}", entry.key)),
             entry.scope
         ));
-    }
+    };
+    result
+}
+
+fn format_versions(response: ListEntryVersionsResponse) -> String {
+    let mut result = String::new();
+    for entry in response.versions {
+        result.push_str(&format!(
+            "{}\nDeleted: {}\nContent Length: {}\nCreated: {}\nObject Created: {}\n\n",
+            Colour::Yellow.paint(format!("version {}", entry.version)),
+            entry.deleted,
+            entry.content_length,
+            entry.created_time,
+            entry.object_created_time
+        ));
+    };
     result
 }
 
@@ -309,9 +324,9 @@ impl DataStore {
                         .await;
                     match res {
                         Ok(data) => {
-                            println!("{}", format_stores(data.datastores));
-                            has_cursor = data.next_page_cursor != Some("".to_string());
-                            next_cursor = data.next_page_cursor;
+                            has_cursor = data.next_page_cursor.clone() != Some("".to_string());
+                            next_cursor = data.next_page_cursor.clone();
+                            println!("{}", format_stores(data));
                         }
                         Err(err) => return Err(err.into()),
                     }
@@ -363,9 +378,9 @@ impl DataStore {
                         .await;
                     match res {
                         Ok(data) => {
-                            println!("{}", format_keys(data.keys));
-                            has_cursor = data.next_page_cursor != Some("".to_string());
-                            next_cursor = data.next_page_cursor;
+                            has_cursor = data.next_page_cursor.clone() != Some("".to_string());
+                            next_cursor = data.next_page_cursor.clone();
+                            println!("{}", format_keys(data));
                         }
                         Err(err) => return Err(err.into()),
                     }
@@ -508,22 +523,49 @@ impl DataStore {
                 let rbx_cloud =
                     RbxCloud::new(&getenv(api_key, "OPENCLOUD_KEY".to_string()), universe_id());
                 let datastore = rbx_cloud.datastore();
-                let res = datastore
-                    .list_entry_versions(&DataStoreListEntryVersions {
-                        name: datastore_name,
-                        scope,
-                        key,
-                        start_time,
-                        end_time,
-                        sort_order: format!("{sort_order:?}"),
-                        limit: ReturnLimit(limit.unwrap_or(100)),
-                        cursor,
-                    })
-                    .await;
-                match res {
-                    Ok(data) => Ok(Some(format!("{data:#?}"))),
-                    Err(err) => Err(err.into()),
+
+                let mut has_cursor = true;
+                let mut next_cursor = cursor.clone();
+                let order = sort_order.unwrap_or(ListEntrySortOrder::Ascending);
+
+                while has_cursor {
+                    let res = datastore
+                        .list_entry_versions(&DataStoreListEntryVersions {
+                            name: datastore_name.clone(),
+                            scope: scope.clone(),
+                            key: key.clone(),
+                            start_time: start_time.clone(),
+                            end_time: end_time.clone(),
+                            sort_order: format!("{order:?}"),
+                            limit: ReturnLimit(limit.unwrap_or(100)),
+                            cursor: next_cursor,
+                        })
+                        .await;
+                    match res {
+                        Ok(data) => {
+                            has_cursor = data.next_page_cursor.clone() != Some("".to_string());
+                            next_cursor = data.next_page_cursor.clone();
+                            println!("{}", format_versions(data));
+                        }
+                        Err(err) => return Err(err.into()),
+                    }
+                    if !has_cursor {
+                        break;
+                    }
+                    print!("Press Enter to continue or 'q' to quit: ");
+                    let _ = stdout().flush();
+                    let mut input = String::new();
+                    let _ = stdin().read_line(&mut input);
+
+                    match input.trim() {
+                        "" => {
+                            print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
+                        }
+                        "q" => break,
+                        _ => println!("Invalid input, quitting..."),
+                    }
                 }
+                Ok(None)
             }
 
             DataStoreCommands::GetVersion {
