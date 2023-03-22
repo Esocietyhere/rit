@@ -8,9 +8,10 @@ pub fn format_datastore_store(response: ListDataStoresResponse) -> String {
     for (index, store) in response.datastores.iter().enumerate() {
         let is_last = index == response.datastores.len() - 1;
         result.push_str(&format!(
-            "{}\nCreated: {}\n",
+            "{}\nCreated: {}{}\n",
             Colour::Yellow.paint(format!("datastore {}", store.name)),
-            format!("{}{}", store.created_time, if is_last { "" } else { "\n" })
+            store.created_time,
+            if is_last { "" } else { "\n" }
         ));
     }
     result
@@ -21,9 +22,10 @@ pub fn format_datastore_entry(response: ListEntriesResponse) -> String {
     for (index, entry) in response.keys.iter().enumerate() {
         let is_last = index == response.keys.len() - 1;
         result.push_str(&format!(
-            "{}\nScope: {}\n",
+            "{}\nScope: {}{}\n",
             Colour::Yellow.paint(format!("key {}", entry.key)),
-            format!("{}{}", entry.scope, if is_last { "" } else { "\n" })
+            entry.scope,
+            if is_last { "" } else { "\n" }
         ));
     }
     result
@@ -39,16 +41,13 @@ pub fn format_datastore_entry_version(response: ListEntryVersionsResponse) -> St
             Colour::Green.paint("ACTIVE")
         };
         result.push_str(&format!(
-            "{} ({})\nLength:  {}\nCreated: {}\n\n    Object Created: {}\n",
+            "{} ({})\nLength:  {}\nCreated: {}\n\n    Object Created: {}{}\n",
             Colour::Yellow.paint(format!("version {}", entry.version)),
             status,
             entry.content_length,
             entry.created_time,
-            format!(
-                "{}{}",
-                entry.object_created_time,
-                if is_last { "" } else { "\n" }
-            )
+            entry.object_created_time,
+            if is_last { "" } else { "\n" }
         ));
     }
     result
