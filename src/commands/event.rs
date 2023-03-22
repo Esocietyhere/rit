@@ -15,7 +15,7 @@ pub async fn event(params: &EventParams) -> anyhow::Result<Option<String>> {
         Some(v) => v,
         None => "main".to_string(),
     };
-    let config = Config::new(branch.clone());
+    let config = Config::new(branch);
     let universe_id = config.get_universe_id().unwrap();
 
     let message = Message::new(&api_key, universe_id);
@@ -24,7 +24,6 @@ pub async fn event(params: &EventParams) -> anyhow::Result<Option<String>> {
             &params.topic.clone().unwrap(),
             &params.message.clone().unwrap(),
         )
-        .await
-        .ok();
+        .await;
     Ok(None)
 }

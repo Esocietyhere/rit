@@ -38,7 +38,6 @@ pub async fn deploy(params: &DeployParams) -> anyhow::Result<Option<String>> {
     let topic = format!("updates-{}", branch);
     Message::new(&api_key, universe_id)
         .publish(&topic, "update")
-        .await
-        .ok();
+        .await;
     Ok(None)
 }

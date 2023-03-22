@@ -1,5 +1,5 @@
 use clap::Parser;
-use rbxcloud::rbx::{error::Error, RbxCloud, UniverseId};
+use rbxcloud::rbx::{RbxCloud, UniverseId};
 
 #[derive(Debug, Parser)]
 pub struct Message {
@@ -15,10 +15,11 @@ impl Message {
         }
     }
 
-    pub async fn publish(&self, topic: &str, data: &str) -> Result<(), Error> {
+    pub async fn publish(&self, topic: &str, data: &str) {
         let cloud = RbxCloud::new(&self.api_key, UniverseId(self.universe_id));
         let messaging = cloud.messaging(topic);
 
-        messaging.publish(data).await
+        messaging.publish(data).await.ok();
+        println!("Published message to topic: {}", topic);
     }
 }
