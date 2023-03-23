@@ -38,7 +38,7 @@ impl Cli {
             Command::Sync(command) => command.run(),
             Command::Event(command) => command.run().await,
             Command::Deploy(command) => command.run().await,
-            Command::DataStore(command) => command.run().await,
+            Command::Datastore(command) => command.run().await,
         }
     }
 }
@@ -53,7 +53,7 @@ pub enum Command {
     Sync(SyncCommand),
     Event(EventCommand),
     Deploy(DeployCommand),
-    DataStore(DataStore),
+    Datastore(DataStore),
 }
 
 pub fn getenv(api_key: Option<String>, name: String) -> String {
