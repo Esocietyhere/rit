@@ -242,6 +242,7 @@ pub enum ListEntrySortOrder {
     Descending,
 }
 
+/// Manage the datastore
 #[derive(Debug, Args)]
 pub struct DataStore {
     #[clap(subcommand)]
