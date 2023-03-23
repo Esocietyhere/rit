@@ -7,8 +7,7 @@ use clap::Parser;
 pub struct DevtoolsCommand;
 impl DevtoolsCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
-        devtools()?;
-        Ok(None)
+        devtools()
     }
 }
 
