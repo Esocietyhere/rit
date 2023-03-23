@@ -4,9 +4,9 @@ use super::getenv;
 use crate::config::Config;
 use crate::rbx::Message;
 
-/// Send the provided message to all subscribers to the topic
+/// Send a message to MessageService
 #[derive(Debug, Parser)]
-pub struct EventCommand {
+pub struct SendCommand {
     /// The branch to send the message to
     #[clap(short, long, value_parser)]
     branch_name: Option<String>,
@@ -21,7 +21,7 @@ pub struct EventCommand {
     api_key: Option<String>,
 }
 
-impl EventCommand {
+impl SendCommand {
     pub async fn run(self) -> anyhow::Result<Option<String>> {
         let api_key = getenv(self.api_key.clone(), "OPENCLOUD_KEY".to_string());
         let branch = match self.branch_name.clone() {

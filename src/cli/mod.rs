@@ -2,10 +2,10 @@ mod build;
 mod datastore;
 mod deploy;
 mod devtools;
-mod event;
 mod init;
 mod open;
 mod run;
+mod send;
 mod sync;
 
 use clap::{Parser, Subcommand};
@@ -14,10 +14,10 @@ pub use self::build::BuildCommand;
 pub use self::datastore::DataStore;
 pub use self::deploy::DeployCommand;
 pub use self::devtools::DevtoolsCommand;
-pub use self::event::EventCommand;
 pub use self::init::InitCommand;
 pub use self::open::OpenCommand;
 pub use self::run::RunCommand;
+pub use self::send::SendCommand;
 pub use self::sync::SyncCommand;
 
 #[derive(Debug, Parser)]
@@ -36,7 +36,7 @@ impl Cli {
             Command::Open(command) => command.run(),
             Command::Run(command) => command.run(),
             Command::Sync(command) => command.run(),
-            Command::Event(command) => command.run().await,
+            Command::Send(command) => command.run().await,
             Command::Deploy(command) => command.run().await,
             Command::Datastore(command) => command.run().await,
         }
@@ -51,7 +51,7 @@ pub enum Command {
     Open(OpenCommand),
     Run(RunCommand),
     Sync(SyncCommand),
-    Event(EventCommand),
+    Send(SendCommand),
     Deploy(DeployCommand),
     Datastore(DataStore),
 }

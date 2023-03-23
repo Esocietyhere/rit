@@ -13,7 +13,7 @@ pub struct OpenCommand {
 impl OpenCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
         open_place(self.file_path.clone());
-        Ok(Some("Opened place file.".to_string()))
+        Ok(None)
     }
 }
 
