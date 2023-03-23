@@ -18,7 +18,7 @@ impl SyncCommand {
 }
 
 pub fn img_sync(auth: Option<String>) -> anyhow::Result<Option<String>> {
-    let auth = getenv(auth.clone(), "ROBLOSECURITY".to_string());
+    let auth = getenv(auth, "ROBLOSECURITY".to_string());
     Command::new("sh")
         .arg("-c")
         .arg(format!(

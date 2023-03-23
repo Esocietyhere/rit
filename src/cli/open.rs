@@ -18,9 +18,7 @@ impl OpenCommand {
 }
 
 pub fn open_place(file_path: Option<String>) -> Option<String> {
-    let input = file_path
-        .clone()
-        .unwrap_or(format!("build/{}.rbxl", "default"));
+    let input = file_path.unwrap_or(format!("build/{}.rbxl", "default"));
     let path = Path::new(&input);
     if !path.exists() {
         println!("File {} does not exist!", input);

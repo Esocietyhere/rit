@@ -22,11 +22,8 @@ impl BuildCommand {
 }
 
 pub fn build(project_name: Option<String>, output_name: Option<String>) -> Option<String> {
-    let project = project_name.clone().unwrap_or("default".to_string());
-    let output = format!(
-        "build/{}.rbxl",
-        output_name.clone().unwrap_or(project.clone())
-    );
+    let project = project_name.unwrap_or("default".to_string());
+    let output = format!("build/{}.rbxl", output_name.unwrap_or(project.clone()));
     let path = Path::new(&output).parent().unwrap();
     if !path.exists() {
         fs::create_dir_all(path).expect("failed to create directory");
