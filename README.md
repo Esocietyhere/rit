@@ -3,7 +3,7 @@
 [![CI](https://github.com/Esocietyhere/rit/workflows/CI/badge.svg)](https://github.com/Esocietyhere/rit/actions/workflows/ci.yml)
 [![Release](https://github.com/Esocietyhere/rit/actions/workflows/release.yml/badge.svg?event=push)](https://github.com/Esocietyhere/rit/actions/workflows/release.yml)
 
-Rit is a command-line tool that helps you manage your Roblox projects. It simplifies the process of uploading your project to Roblox, and makes it easy to build and open your Rojo projects. It can be configured to deploy between multiple experiences and places in the same project.
+Rit is a command-line tool that helps you manage your Roblox projects. It simplifies the process of uploading your project to Roblox and makes it easy to build and open them. It can be configured to deploy between multiple experiences and places in the same project.
 
 Inspired by the Roblox Open Cloud API using [Rbxcloud](https://github.com/Sleitnick/rbxcloud).
 
@@ -19,7 +19,7 @@ $ aftman add Esocietyhere/rit@0.3.0
 
 ## Example Case
 
-If you have a game that has both a staging and production version and you frequently need to deploy updates to both versions, it can be a hassle to manually configure the settings each time. However, you can streamline the process by using `rit` with a `config.json` file at the root of your project. This file can contain multiple experience IDs and place IDs, allowing you to easily switch between different environments without having to modify the configuration every time you deploy.
+Managing a Roblox project with multiple places can be challenging, especially when it comes to publishing which usually takes several tools to function. You can simplify the process by utilizing `rit` along with a `config.json` file placed at the root of your project. This file can store multiple experience IDs and place IDs, making it easy to switch between different environments without having to modify the configuration every time you deploy.
 
 ```json
 {
