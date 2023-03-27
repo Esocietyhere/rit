@@ -14,7 +14,7 @@ Inspired by the Roblox Open Cloud API using [Rbxcloud](https://github.com/Sleitn
 Run the `aftman add` command within your project directory. This will add `rit` to the project's `aftman.toml` file (or create one if it doesn't yet exist).
 
 ```sh
-$ aftman add Esocietyhere/rit@0.3.0
+$ aftman add Esocietyhere/rit@0.3.1
 ```
 
 ## Example Case
@@ -23,16 +23,16 @@ Managing a Roblox project with multiple places can be challenging, especially wh
 
 ```json
 {
-  "deployment": {
-    "universes": {
-      "main": 4458588307
-    },
-    "places": {
-      "main": {
-        "default": 12721091425
+   "deployment": {
+      "universes": {
+         "main": 4458588307
+      },
+      "places": {
+         "main": {
+            "default": 12721091425
+         }
       }
-    }
-  }
+   }
 }
 ```
 
