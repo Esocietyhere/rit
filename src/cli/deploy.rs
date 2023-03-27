@@ -1,7 +1,7 @@
 use super::build::build;
 use super::getenv;
 use crate::config::Config;
-use crate::rbx::{Message, Place};
+use crate::rbx::{Message, Universe};
 use anyhow::Ok;
 use clap::Parser;
 
@@ -30,16 +30,16 @@ impl DeployCommand {
         println!("Publishing to {} universe", branch.clone());
 
         let config = Config::new(branch.clone());
-        let universe_id = config.get_universe_id().unwrap();
+        let universe_id = config.get_universe_id().expect("Universe ID not found");
         let places = config.get_places();
 
-        let place = Place::new(&api_key, universe_id);
+        let universe = Universe::new(&api_key, universe_id);
 
-        for (place_name, place_id) in places.unwrap().iter() {
-            let deploy_dir = format!("deploy/{}", place_name);
-            let path = build(Some(place_name.to_string()), Some(deploy_dir)).unwrap();
+        for (_, place_to_publish) in places.unwrap().iter().enumerate() {
+            let deploy_dir = format!("deploy/{}", place_to_publish.0);
+            let path = build(Some(place_to_publish.0.to_string()), Some(deploy_dir)).unwrap();
 
-            place.publish(&path, place_id.as_u64().unwrap()).await;
+            universe.publish(&path, place_to_publish).await;
         }
 
         if self.message.is_some() {
