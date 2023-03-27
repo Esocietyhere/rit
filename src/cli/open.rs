@@ -33,7 +33,7 @@ pub fn open_place(file_path: Option<String>) -> Option<String> {
     } else if cfg!(target_os = "wsl") {
         Command::new("sh")
             .arg("-c")
-            .arg(format!(r#"start "{}""#, input))
+            .arg(format!(r#"powershell.exe -c start "{}""#, input))
             .output()
             .expect("failed to execute process");
     } else if cfg!(target_os = "linux") {
