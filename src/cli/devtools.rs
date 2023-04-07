@@ -1,7 +1,6 @@
 use ansi_term::Colour;
-use std::process::Command;
-
 use clap::Parser;
+use std::process::Command;
 
 /// Install tarmac, remodel, rojo, wally, selene, and stylua
 #[derive(Debug, Parser)]

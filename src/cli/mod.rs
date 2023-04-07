@@ -2,6 +2,7 @@ mod build;
 mod datastore;
 mod deploy;
 mod devtools;
+mod import;
 mod init;
 mod open;
 mod run;
@@ -14,6 +15,7 @@ pub use self::build::BuildCommand;
 pub use self::datastore::DataStore;
 pub use self::deploy::DeployCommand;
 pub use self::devtools::DevtoolsCommand;
+pub use self::import::ImportCommand;
 pub use self::init::InitCommand;
 pub use self::open::OpenCommand;
 pub use self::run::RunCommand;
@@ -38,6 +40,7 @@ impl Cli {
             Command::Sync(command) => command.run(),
             Command::Send(command) => command.run().await,
             Command::Deploy(command) => command.run().await,
+            Command::Import(command) => command.run(),
             Command::Datastore(command) => command.run().await,
         }
     }
@@ -53,6 +56,7 @@ pub enum Command {
     Sync(SyncCommand),
     Send(SendCommand),
     Deploy(DeployCommand),
+    Import(ImportCommand),
     Datastore(DataStore),
 }
 
