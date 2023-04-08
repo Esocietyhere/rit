@@ -22,7 +22,7 @@ pub struct ImportCommand {
     #[clap(short, long, value_parser)]
     map_name: Option<String>,
     /// The authentication token to use
-    #[clap(short, long, value_parser)]
+    #[clap(short = 'A', long, value_parser)]
     auth: Option<String>,
 }
 
