@@ -1,7 +1,8 @@
+use ansi_term::Colour;
 use clap::Parser;
 use std::process::Command;
 
-/// Import assets
+/// Import assets, archives and/or maps
 #[derive(Debug, Parser)]
 pub struct ImportCommand {
     /// Whether to import assets
@@ -25,7 +26,7 @@ fn remodel(command_name: &str, args: &[&str]) {
     Command::new("sh")
         .arg("-c")
         .arg(format!(
-            r#"remodel run "remodel/scripts/{}.lua" remodel {}"#,
+            r#"remodel run remodel/scripts/{}.lua remodel {}"#,
             command_name,
             args.join(" ")
         ))
@@ -33,21 +34,25 @@ fn remodel(command_name: &str, args: &[&str]) {
         .expect("failed to execute process");
 }
 
+fn log(message: &str) {
+    println!("{} {}", Colour::Green.paint("Importing"), message);
+}
+
 impl ImportCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
         if self.asset_flag {
             remodel("import-assets", &[]);
-            println!("Importing assets");
+            log("assets");
         }
 
         if self.archive_flag {
             remodel("import-archives", &[]);
-            println!("Importing archives");
+            log("archives");
         }
 
         if self.map_flag {
             remodel("import-all-maps", &[]);
-            println!("Importing all maps");
+            log("all maps");
         }
 
         if self.map_name.is_some() {
@@ -59,14 +64,14 @@ impl ImportCommand {
                         self.map_name.as_ref().unwrap(),
                     ],
                 );
-                println!(
-                    "Importing map {} from {}",
+                log(&format!(
+                    "local map \"{}\" from file \"{}\"",
                     self.map_name.as_ref().unwrap(),
                     self.file_path.as_ref().unwrap()
-                );
+                ));
             } else {
                 remodel("import-map", &[self.map_name.as_ref().unwrap()]);
-                println!("Importing map {}", self.map_name.as_ref().unwrap());
+                log(&format!("map \"{}\"", self.map_name.as_ref().unwrap()));
             }
         }
 
