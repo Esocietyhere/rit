@@ -2,6 +2,7 @@ use clap::Parser;
 use serde_json::Value;
 use std::fs::File;
 use std::io::prelude::*;
+use std::path::Path;
 
 #[derive(Debug, Parser)]
 pub struct Config {
@@ -12,9 +13,17 @@ pub struct Config {
     pub branch: String,
 }
 
+fn get_config() -> String {
+    if Path::new("config.json").exists() {
+        "config.json".to_string()
+    } else {
+        "remodel/config.json".to_string()
+    }
+}
+
 impl Config {
     pub fn new(branch: String) -> Self {
-        let mut file = File::open("config.json").expect("Unable to open config.json");
+        let mut file = File::open(get_config()).expect("Unable to open config.json");
         let mut contents = String::new();
         file.read_to_string(&mut contents)
             .expect("Unable to read config.json");
