@@ -1,6 +1,7 @@
 use super::getenv;
 use ansi_term::Colour;
 use clap::Parser;
+use regex::Regex;
 use std::process::Command;
 
 /// Import assets, archives and/or maps
@@ -26,6 +27,20 @@ pub struct ImportCommand {
     auth: Option<String>,
 }
 
+fn get_command(script_name: &str, args: &[&str]) -> String {
+    let command = format!(
+        "remodel run remodel/scripts/import-{}.lua remodel {}",
+        script_name,
+        args.join(" ")
+    );
+
+    // Sanitized command
+    Regex::new(r"\s+")
+        .unwrap()
+        .replace_all(&command, " ")
+        .to_string()
+}
+
 struct Remodel {
     auth: String,
 }
@@ -35,18 +50,16 @@ impl Remodel {
         Remodel { auth }
     }
 
-    pub fn run(&self, script: &str, args: &[&str]) {
+    pub fn run(&self, script_name: &str, args: &[&str]) {
+        let remodel_command = format!("{}--auth \"{}\"", get_command(script_name, args), self.auth);
+        println!("{}", remodel_command);
         Command::new("sh")
             .arg("-c")
-            .arg(format!(
-                r#"remodel run remodel/scripts/import-{}.lua remodel {} --auth "{}""#,
-                script,
-                args.join(" "),
-                self.auth.clone()
-            ))
+            .arg(remodel_command)
             .output()
             .expect("failed to execute process");
-        println!("{} {}", Colour::Green.paint("Importing"), script);
+
+        println!("{} {}", Colour::Green.paint("Importing"), script_name);
     }
 }
 
