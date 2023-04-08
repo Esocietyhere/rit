@@ -1,3 +1,4 @@
+use super::getenv;
 use ansi_term::Colour;
 use clap::Parser;
 use std::process::Command;
@@ -20,58 +21,63 @@ pub struct ImportCommand {
     /// The name of the map to import
     #[clap(short, long, value_parser)]
     map_name: Option<String>,
+    /// The authentication token to use
+    #[clap(short, long, value_parser)]
+    auth: Option<String>,
 }
 
-fn remodel(command_name: &str, args: &[&str]) {
-    Command::new("sh")
-        .arg("-c")
-        .arg(format!(
-            r#"remodel run remodel/scripts/{}.lua remodel {}"#,
-            command_name,
-            args.join(" ")
-        ))
-        .output()
-        .expect("failed to execute process");
+struct Remodel {
+    auth: String,
 }
 
-fn log(message: &str) {
-    println!("{} {}", Colour::Green.paint("Importing"), message);
+impl Remodel {
+    pub fn new(auth: String) -> Remodel {
+        Remodel { auth }
+    }
+
+    pub fn run(&self, script: &str, args: &[&str]) {
+        Command::new("sh")
+            .arg("-c")
+            .arg(format!(
+                r#"remodel run remodel/scripts/import-{}.lua remodel {} --auth "{}""#,
+                script,
+                args.join(" "),
+                self.auth.clone()
+            ))
+            .output()
+            .expect("failed to execute process");
+        println!("{} {}", Colour::Green.paint("Importing"), script);
+    }
 }
 
 impl ImportCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
+        let auth = getenv(self.auth.clone(), "ROBLOSECURITY".to_string());
+        let remodel = Remodel::new(auth);
+
         if self.asset_flag {
-            remodel("import-assets", &[]);
-            log("assets");
+            remodel.run("assets", &[]);
         }
 
         if self.archive_flag {
-            remodel("import-archives", &[]);
-            log("archives");
+            remodel.run("archives", &[]);
         }
 
         if self.map_flag {
-            remodel("import-all-maps", &[]);
-            log("all maps");
+            remodel.run("all-maps", &[]);
         }
 
         if self.map_name.is_some() {
             if self.file_path.is_some() {
-                remodel(
-                    "import-local-map",
+                remodel.run(
+                    "local-map",
                     &[
                         self.file_path.as_ref().unwrap(),
                         self.map_name.as_ref().unwrap(),
                     ],
                 );
-                log(&format!(
-                    "local map \"{}\" from file \"{}\"",
-                    self.map_name.as_ref().unwrap(),
-                    self.file_path.as_ref().unwrap()
-                ));
             } else {
-                remodel("import-map", &[self.map_name.as_ref().unwrap()]);
-                log(&format!("map \"{}\"", self.map_name.as_ref().unwrap()));
+                remodel.run("map", &[self.map_name.as_ref().unwrap()]);
             }
         }
 
