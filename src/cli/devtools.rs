@@ -12,13 +12,13 @@ impl DevtoolsCommand {
     }
 }
 
-pub struct Tool {
+struct Tool {
     pub name: String,
     pub version: String,
 }
 
 impl Tool {
-    pub fn new(name: &str, version: &str) -> Self {
+    fn new(name: &str, version: &str) -> Self {
         Self {
             name: name.to_string(),
             version: version.to_string(),
