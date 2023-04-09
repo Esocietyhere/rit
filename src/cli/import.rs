@@ -4,7 +4,7 @@ use clap::Parser;
 use regex::Regex;
 use std::process::Command;
 
-/// Import assets, archives and/or maps
+/// Import assets, archives and maps
 #[derive(Debug, Parser)]
 pub struct ImportCommand {
     /// Whether to import assets
