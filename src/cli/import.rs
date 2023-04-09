@@ -52,7 +52,6 @@ impl Remodel {
 
     pub fn run(&self, script_name: &str, args: &[&str]) {
         let remodel_command = format!("{}--auth \"{}\"", get_command(script_name, args), self.auth);
-        println!("{}", remodel_command);
         Command::new("sh")
             .arg("-c")
             .arg(remodel_command)
