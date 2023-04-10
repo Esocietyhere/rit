@@ -4,15 +4,12 @@ use clap::Parser;
 use regex::Regex;
 use std::process::Command;
 
-/// Import assets, archives and maps
+/// Import assets and maps
 #[derive(Debug, Parser)]
 pub struct ImportCommand {
     /// Whether to import assets
     #[clap(short, long, takes_value = false)]
     asset_flag: bool,
-    /// Whether to import archives
-    #[clap(short = 'r', long, takes_value = false)]
-    archive_flag: bool,
     /// Whether to import all maps
     #[clap(short = 'M', long, takes_value = false)]
     map_flag: bool,
@@ -79,10 +76,6 @@ impl ImportCommand {
 
         if self.asset_flag {
             remodel.run("assets", &[]);
-        }
-
-        if self.archive_flag {
-            remodel.run("archives", &[]);
         }
 
         if self.map_flag {
