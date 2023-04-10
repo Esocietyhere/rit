@@ -1,8 +1,6 @@
 use super::getenv;
-use ansi_term::Colour;
+use crate::rbx::Remodel;
 use clap::Parser;
-use regex::Regex;
-use std::process::Command;
 
 /// Import assets and maps
 #[derive(Debug, Parser)]
@@ -24,78 +22,33 @@ pub struct ImportCommand {
     auth: Option<String>,
 }
 
-fn get_path(path: &str) -> String {
-    format!("{}\\{}", env!("CARGO_MANIFEST_DIR"), path).replace('\\', "/")
-}
-
-fn get_command(import_name: &str, args: &[&str]) -> String {
-    let remodel_path = get_path("remodel");
-    let script_path = get_path(&format!("remodel\\scripts\\import-{}.lua", import_name));
-
-    let command = format!(
-        "remodel run {} {} {}",
-        script_path,
-        remodel_path,
-        args.join(" ")
-    );
-
-    // Sanitized command
-    Regex::new(r"\s+")
-        .unwrap()
-        .replace_all(&command, " ")
-        .trim()
-        .to_string()
-}
-
-struct Remodel {
-    auth: String,
-}
-
-impl Remodel {
-    pub fn new(auth: String) -> Remodel {
-        Remodel { auth }
-    }
-
-    pub fn run(&self, import_name: &str, args: &[&str]) {
-        let remodel_command = format!(
-            "{} --auth \"{}\"",
-            get_command(import_name, args),
-            self.auth
-        );
-        Command::new("sh")
-            .arg("-c")
-            .arg(remodel_command)
-            .output()
-            .expect("failed to execute process");
-
-        println!("{} {}", Colour::Green.paint("Importing"), import_name);
-    }
-}
-
 impl ImportCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
         let auth = getenv(self.auth.clone(), "ROBLOSECURITY".to_string());
         let remodel = Remodel::new(auth);
 
         if self.asset_flag {
-            remodel.run("assets", &[]);
+            remodel.run(&format!("import-{}.lua", "assets"), &[]);
         }
 
         if self.map_flag {
-            remodel.run("all-maps", &[]);
+            remodel.run(&format!("import-{}.lua", "all-maps"), &[]);
         }
 
         if self.map_name.is_some() {
             if self.file_path.is_some() {
                 remodel.run(
-                    "local-map",
+                    &format!("import-{}.lua", "local-map"),
                     &[
                         self.file_path.as_ref().unwrap(),
                         self.map_name.as_ref().unwrap(),
                     ],
                 );
             } else {
-                remodel.run("map", &[self.map_name.as_ref().unwrap()]);
+                remodel.run(
+                    &format!("import-{}.lua", "map"),
+                    &[self.map_name.as_ref().unwrap()],
+                );
             }
         }
 
