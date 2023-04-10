@@ -245,6 +245,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "fs-err"
+version = "2.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0845fa252299212f0389d64ba26f34fa32cfe41588355f21ed507c59a0f64541"
+
+[[package]]
 name = "futures-channel"
 version = "0.3.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -805,12 +811,13 @@ dependencies = [
 
 [[package]]
 name = "rit"
-version = "0.3.2"
+version = "0.4.0"
 dependencies = [
  "ansi_term",
  "anyhow",
  "clap",
  "dotenv",
+ "fs-err",
  "rbxcloud",
  "regex",
  "serde",

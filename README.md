@@ -15,7 +15,7 @@ Run the `aftman add` command within your project directory. This will add `rit` 
 
 ```sh
 aftman trust esocietyhere/rit
-aftman add esocietyhere/rit@0.3.2
+aftman add esocietyhere/rit@0.4.0
 ```
 
 ## Example Case
@@ -24,16 +24,16 @@ Managing a Roblox project with multiple places can be challenging, especially wh
 
 ```json
 {
-   "deployment": {
-      "universes": {
-         "main": 4458588307
-      },
-      "places": {
-         "main": {
-            "default": 12721091425
-         }
-      }
-   }
+    "deployment": {
+        "universes": {
+            "main": 4458588307
+        },
+        "places": {
+            "main": {
+                "default": 12721091425
+            }
+        }
+    }
 }
 ```
 

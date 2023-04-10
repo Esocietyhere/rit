@@ -27,10 +27,20 @@ pub struct ImportCommand {
     auth: Option<String>,
 }
 
-fn get_command(script_name: &str, args: &[&str]) -> String {
+fn get_path(path: &str) -> String {
+    format!("{}\\{}", env!("CARGO_MANIFEST_DIR"), path).replace("\\", "/")
+}
+
+fn get_command(import_name: &str, args: &[&str]) -> String {
+    let remodel_path = get_path("remodel");
+    let script_path = get_path(&format!("remodel\\scripts\\import-{}.lua", import_name));
+
+    println!("Script path: {}", script_path);
+
     let command = format!(
-        "remodel run remodel/scripts/import-{}.lua remodel {}",
-        script_name,
+        "remodel run {} {} {}",
+        script_path,
+        remodel_path,
         args.join(" ")
     );
 
@@ -50,15 +60,15 @@ impl Remodel {
         Remodel { auth }
     }
 
-    pub fn run(&self, script_name: &str, args: &[&str]) {
-        let remodel_command = format!("{}--auth \"{}\"", get_command(script_name, args), self.auth);
+    pub fn run(&self, import_name: &str, args: &[&str]) {
+        let remodel_command = format!("{}--auth \"{}\"", get_command(import_name, args), self.auth);
         Command::new("sh")
             .arg("-c")
             .arg(remodel_command)
             .output()
             .expect("failed to execute process");
 
-        println!("{} {}", Colour::Green.paint("Importing"), script_name);
+        println!("{} {}", Colour::Green.paint("Importing"), import_name);
     }
 }
 

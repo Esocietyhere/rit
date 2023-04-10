@@ -1,8 +1,7 @@
 use clap::Parser;
+use fs_err::File;
 use serde_json::Value;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
+use std::{io::prelude::*, path::Path};
 
 #[derive(Debug, Parser)]
 pub struct Config {
@@ -14,11 +13,10 @@ pub struct Config {
 }
 
 fn get_config() -> String {
-    if Path::new("config.json").exists() {
-        "config.json".to_string()
-    } else {
-        "remodel/config.json".to_string()
+    if !Path::new("config.json").exists() {
+        panic!("No config.json found in current directory");
     }
+    "config.json".to_string()
 }
 
 impl Config {

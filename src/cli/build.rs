@@ -1,7 +1,8 @@
 use clap::Parser;
-use std::fs;
 use std::path::Path;
 use std::process::Command;
+
+use fs_err as fs;
 
 /// Build the rojo project
 #[derive(Debug, Parser)]
