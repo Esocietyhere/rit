@@ -67,9 +67,9 @@ function maps:_getGame(options)
 	self.usedNames = {}
 
 	if options.name then
-		assert(self.places, NO_PLACES_ERROR)
+		assert(self.import.places, NO_PLACES_ERROR)
 
-		local placeId = self.places[options.name]
+		local placeId = self.import.places[options.name]
 		if placeId then
 			return remodel.readPlaceAsset(placeId)
 		end
@@ -136,8 +136,8 @@ function maps:_importGameAssets(options)
 end
 
 function maps:importAssets()
-	assert(type(self.assetsPlaceId) == "number", "Config does not have a valid assetsPlaceId")
-	self:_importGameAssets({ id = self.assetsPlaceId })
+	assert(type(self.import.assetsPlaceId) == "number", "Config does not have a valid assetsPlaceId")
+	self:_importGameAssets({ id = self.import.assetsPlaceId })
 end
 
 function maps:importLocalAssets(path)
@@ -239,8 +239,8 @@ function maps:importMap(name)
 end
 
 function maps:importAllMaps()
-	assert(self.places, NO_PLACES_ERROR)
-	for name in pairs(self.places) do
+	assert(self.import.places, NO_PLACES_ERROR)
+	for name in pairs(self.import.places) do
 		self:importMap(name)
 	end
 end
