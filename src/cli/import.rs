@@ -32,8 +32,6 @@ fn get_command(import_name: &str, args: &[&str]) -> String {
     let remodel_path = get_path("remodel");
     let script_path = get_path(&format!("remodel\\scripts\\import-{}.lua", import_name));
 
-    println!("Script path: {}", script_path);
-
     let command = format!(
         "remodel run {} {} {}",
         script_path,
@@ -45,6 +43,7 @@ fn get_command(import_name: &str, args: &[&str]) -> String {
     Regex::new(r"\s+")
         .unwrap()
         .replace_all(&command, " ")
+        .trim()
         .to_string()
 }
 
@@ -58,7 +57,11 @@ impl Remodel {
     }
 
     pub fn run(&self, import_name: &str, args: &[&str]) {
-        let remodel_command = format!("{}--auth \"{}\"", get_command(import_name, args), self.auth);
+        let remodel_command = format!(
+            "{} --auth \"{}\"",
+            get_command(import_name, args),
+            self.auth
+        );
         Command::new("sh")
             .arg("-c")
             .arg(remodel_command)

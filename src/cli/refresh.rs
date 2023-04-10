@@ -7,7 +7,7 @@ use std::process::Command;
 /// Refresh a project file
 #[derive(Debug, Parser)]
 pub struct RefreshCommand {
-    /// The path to the place file
+    /// The name of the project to refresh
     #[clap(short, long, value_parser)]
     project_name: Option<String>,
     /// The authentication token to use
@@ -32,6 +32,7 @@ fn get_command(project_name: &str) -> String {
     Regex::new(r"\s+")
         .unwrap()
         .replace_all(&command, " ")
+        .trim()
         .to_string()
 }
 
@@ -45,7 +46,7 @@ impl Remodel {
     }
 
     pub fn run(&self, project_name: &str) {
-        let remodel_command = format!("{}--auth \"{}\"", get_command(project_name), self.auth);
+        let remodel_command = format!("{} --auth \"{}\"", get_command(project_name), self.auth);
         Command::new("sh")
             .arg("-c")
             .arg(remodel_command)
