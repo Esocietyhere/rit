@@ -12,8 +12,8 @@ pub struct OpenCommand {
 
 impl OpenCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
-        open_place(self.file_path.clone());
-        Ok(None)
+        let output = open_place(self.file_path.clone());
+        Ok(output)
     }
 }
 
@@ -22,35 +22,27 @@ pub fn open_place(file_path: Option<String>) -> Option<String> {
     let path = Path::new(&input);
 
     if !path.exists() {
-        panic!("File {} does not exist!", input);
+        return Some(format!("File {:?} does not exist!", path));
+    }
+
+    let (command, arg) = match std::env::consts::OS {
+        "windows" => ("powershell.exe", format!("start {:?}", path)),
+        "linux" => ("xdg-open", format!("{:?}", path)),
+        "macos" => ("open", format!("{:?}", path)),
+        _ => return Some("Unsupported operating system!".to_string()),
     };
 
-    if cfg!(target_os = "windows") {
-        Command::new("sh")
-            .arg("-c")
-            .arg(format!(r#"start "{}""#, input))
+    let output = Some(
+        Command::new(command)
+            .arg(arg)
             .output()
-            .expect("failed to execute process");
-    } else if cfg!(target_os = "wsl") {
-        Command::new("sh")
-            .arg("-c")
-            .arg(format!(r#"powershell.exe -c start "{}""#, input))
-            .output()
-            .expect("failed to execute process");
-    } else if cfg!(target_os = "linux") {
-        Command::new("sh")
-            .arg("-c")
-            .arg(format!(r#"xdg-open "{}""#, input))
-            .output()
-            .expect("failed to execute process");
-    } else if cfg!(target_os = "macos") {
-        Command::new("sh")
-            .arg("-c")
-            .arg(format!(r#"open "{}""#, input))
-            .output()
-            .expect("failed to execute process");
-    } else {
-        println!("Unsupported operating system!");
+            .map_err(|e| format!("Failed to execute command: {}", e)),
+    )?
+    .unwrap();
+
+    if !output.clone().status.success() {
+        return Some(format!("Command failed with code {}", output.status));
     }
-    Some(input)
+
+    None
 }
