@@ -5,6 +5,7 @@ mod devtools;
 mod import;
 mod init;
 mod open;
+mod refresh;
 mod run;
 mod send;
 mod sync;
@@ -18,6 +19,7 @@ pub use self::devtools::DevtoolsCommand;
 pub use self::import::ImportCommand;
 pub use self::init::InitCommand;
 pub use self::open::OpenCommand;
+pub use self::refresh::RefreshCommand;
 pub use self::run::RunCommand;
 pub use self::send::SendCommand;
 pub use self::sync::SyncCommand;
@@ -41,6 +43,7 @@ impl Cli {
             Command::Send(command) => command.run().await,
             Command::Deploy(command) => command.run().await,
             Command::Import(command) => command.run(),
+            Command::Refresh(command) => command.run(),
             Command::Datastore(command) => command.run().await,
         }
     }
@@ -57,6 +60,7 @@ pub enum Command {
     Send(SendCommand),
     Deploy(DeployCommand),
     Import(ImportCommand),
+    Refresh(RefreshCommand),
     Datastore(DataStore),
 }
 
