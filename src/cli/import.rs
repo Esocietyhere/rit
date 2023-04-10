@@ -40,14 +40,14 @@ impl ImportCommand {
                 remodel.run(
                     &format!("import-{}.lua", "local-map"),
                     &[
-                        self.file_path.as_ref().unwrap(),
-                        self.map_name.as_ref().unwrap(),
+                        self.file_path.clone().unwrap(),
+                        self.map_name.clone().unwrap(),
                     ],
                 );
             } else {
                 remodel.run(
                     &format!("import-{}.lua", "map"),
-                    &[self.map_name.as_ref().unwrap()],
+                    &[self.map_name.clone().unwrap()],
                 );
             }
         }

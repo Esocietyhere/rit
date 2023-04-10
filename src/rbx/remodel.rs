@@ -11,7 +11,7 @@ fn get_path(path: &str) -> String {
     format!("{}\\{}", env!("CARGO_MANIFEST_DIR"), path).replace('\\', "/")
 }
 
-fn get_command(file_name: &str, args: &[&str]) -> String {
+fn get_command(file_name: &str, args: &[String]) -> String {
     let remodel_path = get_path("remodel");
     let script_path = get_path(&format!("remodel\\scripts\\{}", file_name));
 
@@ -35,7 +35,7 @@ impl Remodel {
         Remodel { auth }
     }
 
-    pub fn run(&self, file_name: &str, args: &[&str]) {
+    pub fn run(&self, file_name: &str, args: &[String]) {
         let remodel_command = format!("{} --auth \"{}\"", get_command(file_name, args), self.auth);
         Command::new("sh")
             .arg("-c")
