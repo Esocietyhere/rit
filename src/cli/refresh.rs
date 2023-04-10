@@ -16,7 +16,7 @@ pub struct RefreshCommand {
 }
 
 fn get_path(path: &str) -> String {
-    format!("{}\\{}", env!("CARGO_MANIFEST_DIR"), path).replace("\\", "/")
+    format!("{}\\{}", env!("CARGO_MANIFEST_DIR"), path).replace('\\', "/")
 }
 
 fn get_command(project_name: &str) -> String {

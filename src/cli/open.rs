@@ -40,7 +40,7 @@ pub fn open_place(file_path: Option<String>) -> Option<String> {
     )?
     .unwrap();
 
-    if !output.clone().status.success() {
+    if !output.status.success() {
         return Some(format!("Command failed with code {}", output.status));
     }
 

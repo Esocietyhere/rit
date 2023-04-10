@@ -25,7 +25,7 @@ pub struct ImportCommand {
 }
 
 fn get_path(path: &str) -> String {
-    format!("{}\\{}", env!("CARGO_MANIFEST_DIR"), path).replace("\\", "/")
+    format!("{}\\{}", env!("CARGO_MANIFEST_DIR"), path).replace('\\', "/")
 }
 
 fn get_command(import_name: &str, args: &[&str]) -> String {
