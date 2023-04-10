@@ -1,7 +1,13 @@
 [package]
 name = "rit"
 version = "0.4.0"
+description = "CLI for managing Roblox projects"
+authors = ["Esociety <esocietyhere@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/Esocietyhere/rit"
+readme = "README.md"
 edition = "2021"
+include = ["remodel/**"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
