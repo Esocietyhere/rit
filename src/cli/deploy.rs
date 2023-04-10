@@ -48,6 +48,7 @@ impl DeployCommand {
                 .publish(&topic, &self.message.clone().unwrap())
                 .await;
         }
+
         Ok(None)
     }
 }

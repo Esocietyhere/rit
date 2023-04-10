@@ -39,5 +39,6 @@ pub fn build(project_name: Option<String>, output_name: Option<String>) -> Optio
         ))
         .output()
         .expect("failed to execute process");
+
     Some(output)
 }

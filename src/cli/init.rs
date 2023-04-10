@@ -11,6 +11,7 @@ impl InitCommand {
             .arg("rojo init && wally init && aftman init")
             .output()
             .expect("failed to execute process");
+
         Ok(Some("Initialized new Rojo project.".to_string()))
     }
 }

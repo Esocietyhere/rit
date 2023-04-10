@@ -62,8 +62,8 @@ impl RefreshCommand {
         let auth = getenv(self.auth.clone(), "ROBLOSECURITY".to_string());
         let remodel = Remodel::new(auth);
         let project_name = self.project_name.clone().unwrap_or("default".to_string());
-
         remodel.run(&project_name);
+
         Ok(None)
     }
 }

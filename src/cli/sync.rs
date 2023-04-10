@@ -27,5 +27,6 @@ pub fn img_sync(auth: Option<String>) -> anyhow::Result<Option<String>> {
         ))
         .output()
         .expect("failed to execute process");
+
     Ok(Some("Synced images to Roblox CDN.".to_string()))
 }

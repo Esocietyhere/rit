@@ -58,5 +58,6 @@ fn devtools() -> anyhow::Result<Option<String>> {
             Colour::Green.paint(tool.version)
         )
     }
+
     Ok(Some("Finished installing devtools.".to_string()))
 }
