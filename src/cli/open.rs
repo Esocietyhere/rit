@@ -20,8 +20,9 @@ impl OpenCommand {
 pub fn open_place(file_path: Option<String>) -> Option<String> {
     let input = file_path.unwrap_or(format!("build/{}.rbxl", "default"));
     let path = Path::new(&input);
+
     if !path.exists() {
-        println!("File {} does not exist!", input);
+        panic!("File {} does not exist!", input);
     };
 
     if cfg!(target_os = "windows") {

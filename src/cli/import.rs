@@ -8,7 +8,7 @@ use std::process::Command;
 #[derive(Debug, Parser)]
 pub struct ImportCommand {
     /// Whether to import assets
-    #[clap(short, long, takes_value = false)]
+    #[clap(short = 'A', long, takes_value = false)]
     asset_flag: bool,
     /// Whether to import all maps
     #[clap(short = 'M', long, takes_value = false)]
@@ -20,7 +20,7 @@ pub struct ImportCommand {
     #[clap(short, long, value_parser)]
     map_name: Option<String>,
     /// The authentication token to use
-    #[clap(short = 'A', long, value_parser)]
+    #[clap(short, long, value_parser)]
     auth: Option<String>,
 }
 

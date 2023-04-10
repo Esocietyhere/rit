@@ -15,8 +15,9 @@ pub struct Config {
 fn get_config() -> String {
     if !Path::new("config.json").exists() {
         panic!("No config.json found in current directory");
+    } else {
+        "config.json".to_string()
     }
-    "config.json".to_string()
 }
 
 impl Config {
