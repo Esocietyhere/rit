@@ -34,6 +34,7 @@ impl SendCommand {
         Message::new(&api_key, universe_id)
             .publish(&self.topic.clone().unwrap(), &self.message.clone().unwrap())
             .await;
+
         Ok(None)
     }
 }

@@ -1,7 +1,8 @@
 use clap::Parser;
-use std::fs;
 use std::path::Path;
 use std::process::Command;
+
+use fs_err as fs;
 
 /// Build the rojo project
 #[derive(Debug, Parser)]
@@ -25,9 +26,11 @@ pub fn build(project_name: Option<String>, output_name: Option<String>) -> Optio
     let project = project_name.unwrap_or("default".to_string());
     let output = format!("build/{}.rbxl", output_name.unwrap_or(project.clone()));
     let path = Path::new(&output).parent().unwrap();
+
     if !path.exists() {
         fs::create_dir_all(path).expect("failed to create directory");
     };
+
     Command::new("sh")
         .arg("-c")
         .arg(format!(
@@ -36,5 +39,6 @@ pub fn build(project_name: Option<String>, output_name: Option<String>) -> Optio
         ))
         .output()
         .expect("failed to execute process");
+
     Some(output)
 }

@@ -33,7 +33,7 @@ fn devtools() -> anyhow::Result<Option<String>> {
         Tool::new("rojo-rbx/rojo", "7.2.1"),
         Tool::new("upliftgames/wally", "0.3.1"),
         Tool::new("kampfkarren/selene", "0.25.0"),
-        Tool::new("johnnymorganz/stylua", "0.17.0"),
+        Tool::new("johnnymorganz/stylua", "0.17.1"),
     ];
 
     for tool in tools {
@@ -58,5 +58,6 @@ fn devtools() -> anyhow::Result<Option<String>> {
             Colour::Green.paint(tool.version)
         )
     }
+
     Ok(Some("Finished installing devtools.".to_string()))
 }

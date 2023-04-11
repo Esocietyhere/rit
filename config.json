@@ -1,12 +1,18 @@
 {
-  "deployment": {
-    "universes": {
-      "main": 4458588307
+    "import": {
+        "assetsPlaceId": 1234567890,
+        "places": {
+            "default": 12721091425
+        }
     },
-    "places": {
-      "main": {
-        "default": 12721091425
-      }
+    "deployment": {
+        "universes": {
+            "main": 4458588307
+        },
+        "places": {
+            "main": {
+                "default": 12721091425
+            }
+        }
     }
-  }
 }

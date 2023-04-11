@@ -1,7 +1,13 @@
 [package]
 name = "rit"
-version = "0.3.2"
+version = "0.4.0"
+description = "CLI for managing Roblox projects"
+authors = ["Esociety <esocietyhere@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/Esocietyhere/rit"
+readme = "README.md"
 edition = "2021"
+include = ["remodel/**"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -10,6 +16,7 @@ ansi_term = "0.12.1"
 anyhow = "1.0.69"
 clap = { version = "3.2.22", features = ["derive", "env"] }
 dotenv = "0.15.0"
+fs-err = "2.9.0"
 rbxcloud = "0.3.0"
 regex = "1.7.3"
 serde = { version = "1.0.156", features = ["derive"] }

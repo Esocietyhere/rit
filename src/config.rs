@@ -1,8 +1,7 @@
 use clap::Parser;
+use fs_err::File;
 use serde_json::Value;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
+use std::{io::prelude::*, path::Path};
 
 #[derive(Debug, Parser)]
 pub struct Config {
@@ -14,10 +13,10 @@ pub struct Config {
 }
 
 fn get_config() -> String {
-    if Path::new("config.json").exists() {
-        "config.json".to_string()
+    if !Path::new("config.json").exists() {
+        panic!("No config.json found in current directory");
     } else {
-        "remodel/config.json".to_string()
+        "config.json".to_string()
     }
 }
 
@@ -28,7 +27,8 @@ impl Config {
         file.read_to_string(&mut contents)
             .expect("Unable to read config.json");
         let json: Value = serde_json::from_str(&contents).unwrap();
-        Self { json, branch }
+
+        Config { json, branch }
     }
 
     pub fn get_universe_id(&self) -> Result<u64, anyhow::Error> {
