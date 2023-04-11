@@ -24,12 +24,6 @@ Managing a Roblox project with multiple places can be challenging, especially wh
 
 ```json
 {
-    "import": {
-        "assetsPlaceId": 1234567890,
-        "places": {
-            "default": 12721091425
-        }
-    },
     "deployment": {
         "universes": {
             "main": 4458588307
