@@ -7,20 +7,9 @@ pub struct Remodel {
     auth: String,
 }
 
-fn get_path(path: &str) -> String {
-    format!("{}\\{}", env!("CARGO_MANIFEST_DIR"), path).replace('\\', "/")
-}
-
 fn get_command(file_name: &str, args: &[String]) -> String {
-    let remodel_path = get_path("remodel");
-    let script_path = get_path(&format!("remodel\\scripts\\{}", file_name));
-
-    let command = format!(
-        "remodel run {} {} {}",
-        script_path,
-        remodel_path,
-        args.join(" ")
-    );
+    let script_path = format!("remodel/scripts/{}", file_name);
+    let command = format!("remodel run {} remodel {}", script_path, args.join(" "));
 
     // Sanitized command
     Regex::new(r"\s+")

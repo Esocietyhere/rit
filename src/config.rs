@@ -13,10 +13,10 @@ pub struct Config {
 }
 
 fn get_config() -> String {
-    if !Path::new("config.json").exists() {
-        panic!("No config.json found in current directory");
-    } else {
+    if Path::new("config.json").exists() {
         "config.json".to_string()
+    } else {
+        "remodel/config.json".to_string()
     }
 }
 
