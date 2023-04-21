@@ -34,7 +34,7 @@ pub enum DataStoreCommands {
         cursor: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        #[clap(short, long, value_parser)]
         api_key: Option<String>,
     },
 
@@ -65,7 +65,7 @@ pub enum DataStoreCommands {
         cursor: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        #[clap(short, long, value_parser)]
         api_key: Option<String>,
     },
 
@@ -84,7 +84,7 @@ pub enum DataStoreCommands {
         key: String,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        #[clap(short, long, value_parser)]
         api_key: Option<String>,
     },
 
@@ -123,7 +123,7 @@ pub enum DataStoreCommands {
         attributes: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        #[clap(short, long, value_parser)]
         api_key: Option<String>,
     },
 
@@ -154,7 +154,7 @@ pub enum DataStoreCommands {
         attributes: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        #[clap(short, long, value_parser)]
         api_key: Option<String>,
     },
 
@@ -173,7 +173,7 @@ pub enum DataStoreCommands {
         key: String,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        #[clap(short, long, value_parser)]
         api_key: Option<String>,
     },
 
@@ -212,7 +212,7 @@ pub enum DataStoreCommands {
         cursor: Option<String>,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        #[clap(short, long, value_parser)]
         api_key: Option<String>,
     },
 
@@ -235,7 +235,7 @@ pub enum DataStoreCommands {
         version_id: String,
 
         /// Roblox Open Cloud API Key
-        #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+        #[clap(short, long, value_parser)]
         api_key: Option<String>,
     },
 }
