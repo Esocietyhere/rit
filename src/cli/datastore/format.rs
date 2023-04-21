@@ -36,9 +36,9 @@ pub fn format_datastore_entry_version(response: ListEntryVersionsResponse) -> St
     for (index, entry) in response.versions.iter().enumerate() {
         let is_last = index == response.versions.len() - 1;
         let status = if entry.deleted {
-            Colour::Red.paint("DELETING")
+            Colour::Red.bold().paint("DELETING")
         } else {
-            Colour::Green.paint("ACTIVE")
+            Colour::Green.bold().paint("ACTIVE")
         };
         result.push_str(&format!(
             "{} ({})\nLength:  {}\nCreated: {}\n\n    Object Created: {}{}\n",

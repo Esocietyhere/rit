@@ -62,7 +62,7 @@ impl ImportCommand {
 
         Ok(Some(format!(
             "{} {}",
-            Colour::Green.paint("Importing"),
+            Colour::Green.bold().paint("Importing"),
             self.map_name.clone().unwrap_or(output)
         )))
     }
