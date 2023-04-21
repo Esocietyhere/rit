@@ -7,10 +7,10 @@ use clap::Parser;
 pub struct ImportCommand {
     /// Whether to import assets
     #[clap(short = 'A', long, takes_value = false)]
-    asset_flag: bool,
+    game_assets: bool,
     /// Whether to import all maps
     #[clap(short = 'M', long, takes_value = false)]
-    map_flag: bool,
+    game_maps: bool,
     /// The path to the place file
     #[clap(short, long, value_parser)]
     file_path: Option<String>,
@@ -27,11 +27,11 @@ impl ImportCommand {
         let auth = getenv(self.auth.clone(), "ROBLOSECURITY".to_string());
         let remodel = Remodel::new(auth);
 
-        if self.asset_flag {
+        if self.game_assets {
             remodel.run(&format!("import-{}.lua", "assets"), &[]);
         }
 
-        if self.map_flag {
+        if self.game_maps {
             remodel.run(&format!("import-{}.lua", "all-maps"), &[]);
         }
 
