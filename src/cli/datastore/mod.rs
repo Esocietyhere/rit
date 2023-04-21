@@ -3,9 +3,13 @@ mod format;
 use super::getenv;
 use crate::config::Config;
 use clap::{Args, Subcommand, ValueEnum};
+
 use std::io::{stdin, stdout, Write};
 
-use format::{format_datastore_entry, format_datastore_entry_version, format_datastore_store};
+use format::{
+    format_datastore_get_entry, format_datastore_list_entry, format_datastore_list_entry_version,
+    format_datastore_list_store,
+};
 
 use rbxcloud::rbx::{
     DataStoreDeleteEntry, DataStoreGetEntry, DataStoreGetEntryVersion, DataStoreIncrementEntry,
@@ -290,7 +294,7 @@ impl DataStore {
                         Ok(data) => {
                             has_cursor = data.next_page_cursor.clone() != Some("".to_string());
                             next_cursor = data.next_page_cursor.clone();
-                            println!("{}", format_datastore_store(data));
+                            println!("{}", format_datastore_list_store(data));
                         }
                         Err(err) => return Err(err.into()),
                     }
@@ -344,7 +348,7 @@ impl DataStore {
                         Ok(data) => {
                             has_cursor = data.next_page_cursor.clone() != Some("".to_string());
                             next_cursor = data.next_page_cursor.clone();
-                            println!("{}", format_datastore_entry(data));
+                            println!("{}", format_datastore_list_entry(data));
                         }
                         Err(err) => return Err(err.into()),
                     }
@@ -384,7 +388,7 @@ impl DataStore {
                     })
                     .await;
                 match res {
-                    Ok(data) => Ok(Some(data)),
+                    Ok(data) => Ok(Some(format_datastore_get_entry(data))),
                     Err(err) => Err(err.into()),
                 }
             }
@@ -509,7 +513,7 @@ impl DataStore {
                         Ok(data) => {
                             has_cursor = data.next_page_cursor.clone() != Some("".to_string());
                             next_cursor = data.next_page_cursor.clone();
-                            println!("{}", format_datastore_entry_version(data));
+                            println!("{}", format_datastore_list_entry_version(data));
                         }
                         Err(err) => return Err(err.into()),
                     }
