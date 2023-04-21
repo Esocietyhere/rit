@@ -15,7 +15,7 @@ pub struct DeployCommand {
     #[clap(short, long, value_parser)]
     message: Option<String>,
     /// The Roblox API key
-    #[clap(short, long, value_parser, env = "OPENCLOUD_KEY")]
+    #[clap(short, long, value_parser)]
     api_key: Option<String>,
 }
 
