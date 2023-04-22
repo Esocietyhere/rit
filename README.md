@@ -38,3 +38,11 @@ Managing a Roblox project with multiple places can be challenging, especially wh
 ```
 
 Then, you can use the `rit deploy -b [BRANCH_NAME]` command to deploy to the specified branch. If you don't specify a branch, it will default to `main`.
+
+## Credits
+
+Credits to [SolarHorizon](https://github.com/solarhorizon) for writing the remodel library.
+
+## License
+
+Aftman is available under the terms of the MIT license. See <https://opensource.org/licenses/MIT> or [LICENSE](LICENSE) for details.
