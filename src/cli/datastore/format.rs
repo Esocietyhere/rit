@@ -54,7 +54,7 @@ pub fn format_datastore_list_entry_version(response: ListEntryVersionsResponse) 
     result
 }
 
-pub fn format_datastore_get_entry(response: String) -> String {
+pub fn format_json(response: String) -> String {
     let json_object: Value = serde_json::from_str(&response).unwrap();
     serde_json::to_string_pretty(&json_object).unwrap()
 }

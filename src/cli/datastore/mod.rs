@@ -7,8 +7,8 @@ use clap::{Args, Subcommand, ValueEnum};
 use std::io::{stdin, stdout, Write};
 
 use format::{
-    format_datastore_get_entry, format_datastore_list_entry, format_datastore_list_entry_version,
-    format_datastore_list_store,
+    format_datastore_list_entry, format_datastore_list_entry_version, format_datastore_list_store,
+    format_json,
 };
 
 use rbxcloud::rbx::{
@@ -442,7 +442,7 @@ impl DataStore {
                     .get_entry_string(&DataStoreGetEntry { name, scope, key })
                     .await;
                 match res {
-                    Ok(data) => Ok(Some(format_datastore_get_entry(data))),
+                    Ok(data) => Ok(Some(format_json(data))),
                     Err(err) => Err(err.into()),
                 }
             }
@@ -640,7 +640,7 @@ impl DataStore {
                     })
                     .await;
                 match res {
-                    Ok(data) => Ok(Some(data)),
+                    Ok(data) => Ok(Some(format_json(data))),
                     Err(err) => Err(err.into()),
                 }
             }
