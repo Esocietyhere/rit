@@ -66,4 +66,16 @@ impl Config {
             )),
         }
     }
+
+    pub fn get_datastore(&self) -> (Option<String>, Option<String>) {
+        let datastore_config = &self.json.get("datastore");
+
+        match datastore_config {
+            Some(datastore) => (
+                Some(datastore.get("name").unwrap().to_string()),
+                Some(datastore.get("scope").unwrap().to_string()),
+            ),
+            None => return (None, None),
+        }
+    }
 }
