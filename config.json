@@ -8,5 +8,9 @@
                 "default": 12721091425
             }
         }
+    },
+    "datastore": {
+        "name": "DataStore/Name",
+        "scope": "DataStore/Scope/Name"
     }
 }
