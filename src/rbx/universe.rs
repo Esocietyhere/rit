@@ -1,3 +1,4 @@
+use ansi_term::Colour;
 use clap::Parser;
 use rbxcloud::rbx::{PlaceId, PublishVersionType, RbxCloud, UniverseId};
 use serde_json::Value;
@@ -29,8 +30,11 @@ impl Universe {
         match publish_result {
             Ok(result) => {
                 println!(
-                    "Published {} ({}) with version number: {}",
-                    place_name, place_id, result.version_number
+                    "{} {} ({}) with version number: {}",
+                    Colour::Green.bold().paint("Published"),
+                    place_name,
+                    place_id,
+                    result.version_number
                 );
             }
             Err(e) => {

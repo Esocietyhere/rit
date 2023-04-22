@@ -2,6 +2,7 @@ use super::build::build;
 use super::getenv;
 use crate::config::Config;
 use crate::rbx::{Message, Universe};
+use ansi_term::Colour;
 use anyhow::Ok;
 use clap::Parser;
 
@@ -27,7 +28,11 @@ impl DeployCommand {
             None => "main".to_string(),
         };
 
-        println!("Publishing to {} universe", branch.clone());
+        println!(
+            "{} to {} universe",
+            Colour::Green.bold().paint("Publishing"),
+            branch.clone()
+        );
 
         let config = Config::new(branch.clone());
         let universe_id = config.get_universe_id().expect("Universe ID not found");
