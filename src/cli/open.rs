@@ -1,6 +1,5 @@
-use std::{path::Path, process::Command};
-
 use clap::Parser;
+use std::path::Path;
 
 /// Open a place file in Roblox Studio
 #[derive(Debug, Parser)]
@@ -21,27 +20,10 @@ pub fn open_place(file_path: Option<String>) -> Option<String> {
     let input = file_path.unwrap_or(format!("build/{}.rbxl", "default"));
     let path = Path::new(&input);
 
-    if !path.exists() {
-        return Some(format!("File {:?} does not exist!", path));
-    }
-
-    let (command, arg) = match std::env::consts::OS {
-        "windows" => ("powershell.exe", format!("start {:?}", path)),
-        "linux" => ("xdg-open", format!("{:?}", path)),
-        "macos" => ("open", format!("{:?}", path)),
-        _ => return Some("Unsupported operating system!".to_string()),
-    };
-
-    let output = Some(
-        Command::new(command)
-            .arg(arg)
-            .output()
-            .map_err(|e| format!("Failed to execute command: {}", e)),
-    )?
-    .unwrap();
-
-    if !output.status.success() {
-        return Some(format!("Command failed with code {}", output.status));
+    if path.exists() {
+        opener::open(path).expect("Couldn't open Roblox Studio");
+    } else {
+        Some(format!("File {:?} does not exist!", path));
     }
 
     None
