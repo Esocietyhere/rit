@@ -75,7 +75,7 @@ impl Config {
                 Some(ds.get("name").unwrap().as_str().unwrap().to_string()),
                 Some(ds.get("scope").unwrap().as_str().unwrap().to_string()),
             ),
-            None => return (None, None),
+            None => (None, None),
         }
     }
 }
