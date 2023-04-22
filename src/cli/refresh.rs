@@ -67,6 +67,8 @@ impl RefreshCommand {
                 Colour::Green.bold().paint("Refreshing"),
                 project_name
             );
+        } else {
+            println!("No project name specified!");
         }
 
         Ok(None)
