@@ -12,7 +12,7 @@ Inspired by the Roblox Open Cloud API using [Rbxcloud](https://github.com/Sleitn
 Run the `aftman add` command within your project directory. This will add `rit` to the project's `aftman.toml` file (or create one if it doesn't yet exist).
 ```sh
 aftman trust esocietyhere/rit
-aftman add esocietyhere/rit@0.5.0
+aftman add esocietyhere/rit@0.5.1
 ```
 
 ## Example Case
