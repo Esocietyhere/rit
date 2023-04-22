@@ -1,7 +1,6 @@
 mod build;
 mod datastore;
 mod deploy;
-mod devtools;
 mod import;
 mod init;
 mod open;
@@ -15,7 +14,6 @@ use clap::{Parser, Subcommand};
 pub use self::build::BuildCommand;
 pub use self::datastore::DataStore;
 pub use self::deploy::DeployCommand;
-pub use self::devtools::DevtoolsCommand;
 pub use self::import::ImportCommand;
 pub use self::init::InitCommand;
 pub use self::open::OpenCommand;
@@ -35,7 +33,6 @@ impl Cli {
     pub async fn run(self) -> anyhow::Result<Option<String>> {
         match self.command {
             Command::Init(command) => command.run(),
-            Command::Devtools(command) => command.run(),
             Command::Build(command) => command.run(),
             Command::Open(command) => command.run(),
             Command::Run(command) => command.run(),
@@ -52,7 +49,6 @@ impl Cli {
 #[derive(Debug, Subcommand)]
 pub enum Command {
     Init(InitCommand),
-    Devtools(DevtoolsCommand),
     Build(BuildCommand),
     Open(OpenCommand),
     Run(RunCommand),

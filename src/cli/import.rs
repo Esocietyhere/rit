@@ -1,5 +1,6 @@
 use super::getenv;
 use crate::rbx::Remodel;
+use ansi_term::Colour;
 use clap::Parser;
 
 /// Import assets and maps
@@ -7,10 +8,10 @@ use clap::Parser;
 pub struct ImportCommand {
     /// Whether to import assets
     #[clap(short = 'A', long, takes_value = false)]
-    asset_flag: bool,
+    game_assets: bool,
     /// Whether to import all maps
     #[clap(short = 'M', long, takes_value = false)]
-    map_flag: bool,
+    game_maps: bool,
     /// The path to the place file
     #[clap(short, long, value_parser)]
     file_path: Option<String>,
@@ -27,31 +28,42 @@ impl ImportCommand {
         let auth = getenv(self.auth.clone(), "ROBLOSECURITY".to_string());
         let remodel = Remodel::new(auth);
 
-        if self.asset_flag {
-            remodel.run(&format!("import-{}.lua", "assets"), &[]);
-        }
-
-        if self.map_flag {
-            remodel.run(&format!("import-{}.lua", "all-maps"), &[]);
-        }
+        let mut output = "none".to_string();
 
         if self.map_name.is_some() {
+            let mut map_type = "map";
+            let args = &[
+                self.file_path.clone().unwrap(),
+                self.map_name.clone().unwrap(),
+            ];
+
             if self.file_path.is_some() {
-                remodel.run(
-                    &format!("import-{}.lua", "local-map"),
-                    &[
-                        self.file_path.clone().unwrap(),
-                        self.map_name.clone().unwrap(),
-                    ],
-                );
-            } else {
-                remodel.run(
-                    &format!("import-{}.lua", "map"),
-                    &[self.map_name.clone().unwrap()],
+                map_type = "local-map";
+            };
+
+            remodel.run(&format!("import-{}.lua", map_type), args);
+        } else {
+            if self.game_assets {
+                let asset_type = "assets";
+                remodel.run(&format!("import-{}.lua", asset_type), &[]);
+
+                output.push_str(asset_type);
+            }
+
+            if self.game_maps {
+                let asset_type = "all-maps";
+                remodel.run(&format!("import-{}.lua", asset_type), &[]);
+
+                output.push_str(
+                    format!("{}{}", if self.game_assets { ", " } else { "" }, asset_type).as_str(),
                 );
             }
         }
 
-        Ok(None)
+        Ok(Some(format!(
+            "{} {}",
+            Colour::Green.bold().paint("Importing"),
+            self.map_name.clone().unwrap_or(output)
+        )))
     }
 }
