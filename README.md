@@ -15,7 +15,7 @@ Run the `aftman add` command within your project directory. This will add `rit` 
 
 ```sh
 aftman trust esocietyhere/rit
-aftman add esocietyhere/rit@0.4.0
+aftman add esocietyhere/rit@0.5.0
 ```
 
 ## Example Case
