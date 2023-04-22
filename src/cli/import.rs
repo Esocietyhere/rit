@@ -28,42 +28,47 @@ impl ImportCommand {
         let auth = getenv(self.auth.clone(), "ROBLOSECURITY".to_string());
         let remodel = Remodel::new(auth);
 
-        let mut output = "none".to_string();
+        println!(
+            "{} {}",
+            Color::green().paint("Importing"),
+            (if self.map_name.is_some() {
+                self.map_name.clone().unwrap()
+            } else if self.game_assets && self.game_maps {
+                "all assets and maps".to_string()
+            } else if self.game_assets {
+                "all assets".to_string()
+            } else if self.game_maps {
+                "all maps".to_string()
+            } else {
+                return Ok(Some("No import options specified!".to_string()));
+            })
+        );
 
         if self.map_name.is_some() {
-            let mut map_type = "map";
-            let args = &[
-                self.file_path.clone().unwrap(),
-                self.map_name.clone().unwrap(),
-            ];
-
             if self.file_path.is_some() {
-                map_type = "local-map";
-            };
-
-            remodel.run(&format!("import-{}.lua", map_type), args);
+                remodel.run(
+                    &format!("import-{}.lua", "local-map"),
+                    &[
+                        self.file_path.clone().unwrap(),
+                        self.map_name.clone().unwrap(),
+                    ],
+                );
+            } else {
+                remodel.run(
+                    &format!("import-{}.lua", "map"),
+                    &[self.map_name.clone().unwrap()],
+                );
+            }
         } else {
             if self.game_assets {
-                let asset_type = "assets";
-                remodel.run(&format!("import-{}.lua", asset_type), &[]);
-
-                output.push_str(asset_type);
+                remodel.run(&format!("import-{}.lua", "assets"), &[]);
             }
 
             if self.game_maps {
-                let asset_type = "all-maps";
-                remodel.run(&format!("import-{}.lua", asset_type), &[]);
-
-                output.push_str(
-                    format!("{}{}", if self.game_assets { ", " } else { "" }, asset_type).as_str(),
-                );
+                remodel.run(&format!("import-{}.lua", "all-maps"), &[]);
             }
         }
 
-        Ok(Some(format!(
-            "{} {}",
-            Color::green().paint("Importing"),
-            self.map_name.clone().unwrap_or(output)
-        )))
+        Ok(None)
     }
 }
