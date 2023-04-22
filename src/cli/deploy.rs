@@ -1,8 +1,8 @@
 use super::build::build;
 use super::getenv;
+use crate::color::Color;
 use crate::config::Config;
 use crate::rbx::{Message, Universe};
-use ansi_term::Colour;
 use anyhow::Ok;
 use clap::Parser;
 
@@ -30,7 +30,7 @@ impl DeployCommand {
 
         println!(
             "{} to {} universe",
-            Colour::Green.bold().paint("Publishing"),
+            Color::green().paint("Publishing"),
             branch.clone()
         );
 

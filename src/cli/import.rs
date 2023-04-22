@@ -1,6 +1,6 @@
 use super::getenv;
+use crate::color::Color;
 use crate::rbx::Remodel;
-use ansi_term::Colour;
 use clap::Parser;
 
 /// Import assets and maps
@@ -62,7 +62,7 @@ impl ImportCommand {
 
         Ok(Some(format!(
             "{} {}",
-            Colour::Green.bold().paint("Importing"),
+            Color::green().paint("Importing"),
             self.map_name.clone().unwrap_or(output)
         )))
     }

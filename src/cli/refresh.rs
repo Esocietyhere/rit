@@ -1,6 +1,6 @@
 use super::getenv;
+use crate::color::Color;
 use crate::rbx::Remodel;
-use ansi_term::Colour;
 use clap::Parser;
 use fs_err as fs;
 use regex::Regex;
@@ -51,22 +51,14 @@ impl RefreshCommand {
 
                         if filtered_name != "default" {
                             remodel.run("refresh-project.lua", &[filtered_name.clone()]);
-                            println!(
-                                "{} {}",
-                                Colour::Green.bold().paint("Refreshing"),
-                                filtered_name
-                            );
+                            println!("{} {}", Color::green().paint("Refreshing"), filtered_name);
                         }
                     }
                 }
             }
         } else if self.project_name.is_some() {
             remodel.run("refresh-project.lua", &[project_name.clone()]);
-            println!(
-                "{} {}",
-                Colour::Green.bold().paint("Refreshing"),
-                project_name
-            );
+            println!("{} {}", Color::green().paint("Refreshing"), project_name);
         } else {
             println!("No project name specified!");
         }

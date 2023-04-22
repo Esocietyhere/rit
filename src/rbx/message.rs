@@ -1,4 +1,4 @@
-use ansi_term::Colour;
+use crate::color::Color;
 use clap::Parser;
 use rbxcloud::rbx::{RbxCloud, UniverseId};
 
@@ -23,7 +23,7 @@ impl Message {
         messaging.publish(data).await.ok();
         println!(
             "{} message \"{}\" with topic: {}",
-            Colour::Green.bold().paint("Published"),
+            Color::green().paint("Published"),
             data,
             topic
         );

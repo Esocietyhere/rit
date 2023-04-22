@@ -1,4 +1,4 @@
-use ansi_term::Colour;
+use crate::color::Color;
 use rbxcloud::rbx::datastore::{
     ListDataStoresResponse, ListEntriesResponse, ListEntryVersionsResponse,
 };
@@ -10,7 +10,7 @@ pub fn format_datastore_list_store(response: ListDataStoresResponse) -> String {
         let is_last = index == response.datastores.len() - 1;
         result.push_str(&format!(
             "{}\nCreated: {}{}\n",
-            Colour::Yellow.paint(format!("datastore {}", store.name)),
+            Color::yellow().paint(&format!("datastore {}", store.name)),
             store.created_time,
             if is_last { "" } else { "\n" }
         ));
@@ -24,7 +24,7 @@ pub fn format_datastore_list_entry(response: ListEntriesResponse) -> String {
         let is_last = index == response.keys.len() - 1;
         result.push_str(&format!(
             "{}\nScope: {}{}\n",
-            Colour::Yellow.paint(format!("key {}", entry.key)),
+            Color::yellow().paint(&format!("key {}", entry.key)),
             entry.scope,
             if is_last { "" } else { "\n" }
         ));
@@ -37,13 +37,13 @@ pub fn format_datastore_list_entry_version(response: ListEntryVersionsResponse) 
     for (index, entry) in response.versions.iter().enumerate() {
         let is_last = index == response.versions.len() - 1;
         let status = if entry.deleted {
-            Colour::Red.bold().paint("DELETING")
+            Color::red().paint("DELETING")
         } else {
-            Colour::Green.bold().paint("ACTIVE")
+            Color::green().paint("ACTIVE")
         };
         result.push_str(&format!(
             "{} ({})\nLength:  {}\nCreated: {}\n\n    Object Created: {}{}\n",
-            Colour::Yellow.paint(format!("version {}", entry.version)),
+            Color::yellow().paint(&format!("version {}", entry.version)),
             status,
             entry.content_length,
             entry.created_time,

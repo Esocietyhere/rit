@@ -1,4 +1,5 @@
 mod cli;
+mod color;
 mod config;
 mod rbx;
 
