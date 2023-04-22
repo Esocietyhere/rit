@@ -15,6 +15,12 @@ aftman trust esocietyhere/rit
 aftman add esocietyhere/rit@0.5.1
 ```
 
+### Source
+You'll need Rust and Cargo installed. This builds the latest work from the main branch.
+```sh
+cargo install --git https://github.com/esocietyhere/rit
+```
+
 ## Example Case
 Managing a Roblox project with multiple places can be challenging, especially when it comes to publishing which usually takes several tools to function. You can simplify the process by utilizing `rit` along with a `config.json` file placed at the root of your project. This file can store multiple experience IDs and place IDs, making it easy to switch between different environments without having to modify the configuration every time you deploy.
 ```json
