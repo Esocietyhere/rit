@@ -71,9 +71,9 @@ impl Config {
         let datastore_config = &self.json.get("datastore");
 
         match datastore_config {
-            Some(datastore) => (
-                Some(datastore.get("name").unwrap().to_string()),
-                Some(datastore.get("scope").unwrap().to_string()),
+            Some(ds) => (
+                Some(ds.get("name").unwrap().as_str().unwrap().to_string()),
+                Some(ds.get("scope").unwrap().as_str().unwrap().to_string()),
             ),
             None => return (None, None),
         }
