@@ -1,3 +1,4 @@
+use ansi_term::Colour;
 use clap::Parser;
 use rbxcloud::rbx::{RbxCloud, UniverseId};
 
@@ -20,6 +21,11 @@ impl Message {
         let messaging = cloud.messaging(topic);
 
         messaging.publish(data).await.ok();
-        println!("Published message \"{}\" to topic: {}", data, topic);
+        println!(
+            "{} message \"{}\" with topic: {}",
+            Colour::Green.bold().paint("Published"),
+            data,
+            topic
+        );
     }
 }
