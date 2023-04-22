@@ -38,4 +38,4 @@ Then, you can use the `rit deploy -b [BRANCH_NAME]` command to deploy to the spe
 Credits to [SolarHorizon](https://github.com/solarhorizon) for creating the remodel library.
 
 ## License
-Aftman is available under the terms of the MIT license. See <https://opensource.org/licenses/MIT> or [LICENSE](LICENSE.md) for details.
+Rit is available under the terms of the MIT license. See [LICENSE](LICENSE.md) for details.
