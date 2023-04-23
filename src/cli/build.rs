@@ -18,8 +18,8 @@ pub struct BuildCommand {
 
 impl BuildCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
-        let output = build(self.project_name.clone(), self.output_name.clone());
-        Ok(output)
+        build_place(self.project_name.clone(), self.output_name.clone());
+        Ok(None)
     }
 }
 
@@ -32,7 +32,7 @@ fn build_output(project: String, output_path: String) -> String {
     )
 }
 
-pub fn build(project_name: Option<String>, output_name: Option<String>) -> Option<String> {
+pub fn build_place(project_name: Option<String>, output_name: Option<String>) -> Option<String> {
     let project = project_name.unwrap_or("default".to_string());
     let output = format!("build/{}.rbxl", output_name.unwrap_or(project.clone()));
     let path = Path::new(&output).parent().unwrap();

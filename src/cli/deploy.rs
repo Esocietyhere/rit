@@ -1,4 +1,4 @@
-use super::build::build;
+use super::build::build_place;
 use super::getenv;
 use crate::color::Color;
 use crate::config::Config;
@@ -42,7 +42,7 @@ impl DeployCommand {
 
         for (_, place_to_publish) in places.unwrap().iter().enumerate() {
             let deploy_dir = format!("deploy/{}", place_to_publish.0);
-            let path = build(Some(place_to_publish.0.to_string()), Some(deploy_dir)).unwrap();
+            let path = build_place(Some(place_to_publish.0.to_string()), Some(deploy_dir)).unwrap();
 
             universe.publish(&path, place_to_publish).await;
         }
