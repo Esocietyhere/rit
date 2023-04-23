@@ -10,7 +10,7 @@ pub fn format_datastore_list_store(response: ListDataStoresResponse) -> String {
         let is_last = index == response.datastores.len() - 1;
         result.push_str(&format!(
             "{}\nCreated: {}{}\n",
-            Color::yellow().paint(&format!("datastore {}", store.name)),
+            Color::blue().paint(&format!("datastore {}", store.name)),
             store.created_time,
             if is_last { "" } else { "\n" }
         ));
@@ -24,7 +24,7 @@ pub fn format_datastore_list_entry(response: ListEntriesResponse) -> String {
         let is_last = index == response.keys.len() - 1;
         result.push_str(&format!(
             "{}\nScope: {}{}\n",
-            Color::yellow().paint(&format!("key {}", entry.key)),
+            Color::blue().paint(&format!("key {}", entry.key)),
             entry.scope,
             if is_last { "" } else { "\n" }
         ));
@@ -43,7 +43,7 @@ pub fn format_datastore_list_entry_version(response: ListEntryVersionsResponse) 
         };
         result.push_str(&format!(
             "{} ({})\nLength:  {}\nCreated: {}\n\n    Object Created: {}{}\n",
-            Color::yellow().paint(&format!("version {}", entry.version)),
+            Color::blue().paint(&format!("version {}", entry.version)),
             status,
             entry.content_length,
             entry.created_time,

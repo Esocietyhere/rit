@@ -1,3 +1,4 @@
+use crate::color::Color;
 use clap::Parser;
 use std::path::Path;
 
@@ -16,14 +17,19 @@ impl OpenCommand {
     }
 }
 
+fn open_output(file_path: String) -> String {
+    format!("{} `{}`", Color::green().pad("Running"), file_path)
+}
+
 pub fn open_place(file_path: Option<String>) -> Option<String> {
     let input = file_path.unwrap_or(format!("build/{}.rbxl", "default"));
     let path = Path::new(&input);
 
     if path.exists() {
+        println!("{}", open_output(input.clone()));
         opener::open(path).expect("Couldn't open Roblox Studio");
     } else {
-        Some(format!("File {:?} does not exist!", path));
+        return Some(format!("File {:?} does not exist!", path));
     }
 
     None

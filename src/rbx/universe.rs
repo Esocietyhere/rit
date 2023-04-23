@@ -31,7 +31,7 @@ impl Universe {
             Ok(result) => {
                 println!(
                     "{} {} ({}) with version number: {}",
-                    Color::green().paint("Published"),
+                    Color::green().pad("Published"),
                     place_name,
                     place_id,
                     result.version_number

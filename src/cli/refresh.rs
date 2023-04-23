@@ -51,14 +51,14 @@ impl RefreshCommand {
 
                         if filtered_name != "default" {
                             remodel.run("refresh-project.lua", &[filtered_name.clone()]);
-                            println!("{} {}", Color::green().paint("Refreshing"), filtered_name);
+                            println!("{} {}", Color::green().pad("Refreshing"), filtered_name);
                         }
                     }
                 }
             }
         } else if self.project_name.is_some() {
             remodel.run("refresh-project.lua", &[project_name.clone()]);
-            println!("{} {}", Color::green().paint("Refreshing"), project_name);
+            println!("{} {}", Color::green().pad("Refreshing"), project_name);
         } else {
             println!("No project name specified!");
         }

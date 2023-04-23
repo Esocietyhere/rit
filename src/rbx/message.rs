@@ -23,7 +23,7 @@ impl Message {
         messaging.publish(data).await.ok();
         println!(
             "{} message \"{}\" with topic: {}",
-            Color::green().paint("Published"),
+            Color::green().pad("Published"),
             data,
             topic
         );

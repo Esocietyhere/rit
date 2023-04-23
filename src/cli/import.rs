@@ -30,7 +30,7 @@ impl ImportCommand {
 
         println!(
             "{} {}",
-            Color::green().paint("Importing"),
+            Color::green().pad("Importing"),
             (if self.map_name.is_some() {
                 self.map_name.clone().unwrap()
             } else if self.game_assets && self.game_maps {

@@ -8,21 +8,21 @@ pub struct Color {
 }
 
 impl Color {
-    pub fn green() -> Self {
-        Color {
-            color_name: Some(c::Green),
-        }
-    }
-
     pub fn red() -> Self {
         Color {
             color_name: Some(c::Red),
         }
     }
 
-    pub fn yellow() -> Self {
+    pub fn green() -> Self {
         Color {
-            color_name: Some(c::Yellow),
+            color_name: Some(c::Green),
+        }
+    }
+
+    pub fn blue() -> Self {
+        Color {
+            color_name: Some(c::Blue),
         }
     }
 
@@ -38,5 +38,9 @@ impl Color {
         buffer.reset().unwrap();
 
         String::from_utf8(buffer.as_slice().to_vec()).unwrap()
+    }
+
+    pub fn pad(&self, text: &str) -> String {
+        self.paint(&format!("{:>12}", text))
     }
 }

@@ -30,7 +30,7 @@ impl DeployCommand {
 
         println!(
             "{} to {} universe",
-            Color::green().paint("Publishing"),
+            Color::green().pad("Publishing"),
             branch.clone()
         );
 
