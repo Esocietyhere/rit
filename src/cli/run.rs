@@ -15,7 +15,7 @@ pub struct RunCommand {
 impl RunCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
         let output = build_place(self.project_name.clone(), self.output_name.clone());
-        open_place(output.clone());
+        open_place(output);
         Ok(None)
     }
 }
