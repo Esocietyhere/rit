@@ -71,7 +71,7 @@ jobs:
           profile: minimal
 
       - name: Build Release
-        run: cargo build --release --locked --verbose --target ${{ matrix.target }}
+        run: cargo build --release --locked --target ${{ matrix.target }}
         env:
           CARGO_TARGET_DIR: output
           OPENSSL_STATIC: 1
