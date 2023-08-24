@@ -1,4 +1,4 @@
-use super::{build::build_place, open::open_place};
+use super::{build::build_place, open::OpenCommand};
 use clap::Parser;
 
 /// Build the project and open it in Roblox Studio
@@ -15,7 +15,11 @@ pub struct RunCommand {
 impl RunCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
         let output = build_place(self.project_name.clone(), self.output_name.clone());
-        open_place(output);
+        let open_command = OpenCommand {
+            file_path: output.clone(),
+        };
+
+        open_command.run()?;
         Ok(None)
     }
 }
