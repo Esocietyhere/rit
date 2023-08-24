@@ -1,8 +1,8 @@
 use crate::color::Color;
 use clap::Parser;
 use roblox_install::RobloxStudio;
-use std::env;
 use std::path::Path;
+use std::process::{Command, Stdio};
 
 /// Open a place file in Roblox Studio
 #[derive(Debug, Parser)]
@@ -27,18 +27,17 @@ pub fn open_place(file_path: Option<String>) -> Option<String> {
     let input = file_path.unwrap_or(format!("build/{}.rbxl", "default"));
     let path = Path::new(&input);
 
-    if env::var("BROWSER").is_err() {
-        env::set_var(
-            "BROWSER",
-            RobloxStudio::locate()
-                .expect("Couldn't locate Roblox Studio installation")
-                .application_path(),
-        );
-    }
-
     if path.exists() {
+        let studio_install =
+            RobloxStudio::locate().expect("Could not locate a Roblox Studio installation.");
+
+        let _studio_process = Command::new(studio_install.application_path())
+            .arg(format!("{}", path.display()))
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn();
+
         println!("{}", open_output(input.clone()));
-        opener::open_browser(path).expect("Couldn't open Roblox Studio");
     } else {
         return Some(format!("File {:?} does not exist!", path));
     }
