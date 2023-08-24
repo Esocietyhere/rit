@@ -12,6 +12,10 @@ pub struct OpenCommand {
     pub file_path: Option<String>,
 }
 
+fn open_output(file_path: String) -> String {
+    format!("{} `{}`", Color::green().pad("Running"), file_path)
+}
+
 impl OpenCommand {
     pub fn run(&self) -> anyhow::Result<Option<String>> {
         let input = self
@@ -38,8 +42,4 @@ impl OpenCommand {
 
         Ok(None)
     }
-}
-
-fn open_output(file_path: String) -> String {
-    format!("{} `{}`", Color::green().pad("Running"), file_path)
 }
