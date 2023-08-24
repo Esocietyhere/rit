@@ -40,7 +40,7 @@ impl Config {
             .unwrap()
             .get(&self.branch);
         match universe_id {
-            Some(v) => Ok(Some(v).unwrap().as_u64().unwrap()),
+            Some(v) => Ok(v.as_u64().unwrap()),
             None => Err(anyhow::anyhow!(
                 "No universe id found for branch {}",
                 &self.branch
@@ -59,7 +59,7 @@ impl Config {
             .unwrap()
             .get(&self.branch);
         match places {
-            Some(v) => Ok(Some(v).unwrap().as_object().unwrap()),
+            Some(v) => Ok(v.as_object().unwrap()),
             None => Err(anyhow::anyhow!(
                 "No places found for branch {}",
                 &self.branch

@@ -20,7 +20,7 @@ pub struct RefreshCommand {
 }
 
 fn filter_project_file(filename: &str) -> String {
-    let pattern = Regex::new(r#"^.+[\\/]([^\\/]+)\.project\.json$"#).unwrap();
+    let pattern = Regex::new(r"^.+[\\/]([^\\/]+)\.project\.json$").unwrap();
 
     if let Some(captures) = pattern.captures(filename) {
         captures.get(1).unwrap().as_str().to_string()
