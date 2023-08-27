@@ -1,10 +1,13 @@
 use clap::Parser;
 use fs_err::File;
 use serde_json::Value;
-use std::{io::prelude::*, path::Path};
+use std::io::prelude::*;
 
 #[derive(Debug, Parser)]
 pub struct Config {
+    #[clap(short, long, value_parser)]
+    pub path: String,
+
     #[clap(short, long, value_parser)]
     pub json: Value,
 
@@ -12,23 +15,20 @@ pub struct Config {
     pub branch: String,
 }
 
-fn get_config() -> String {
-    if Path::new("config.json").exists() {
-        "config.json".to_string()
-    } else {
-        "remodel/config.json".to_string()
-    }
-}
-
 impl Config {
     pub fn new(branch: String) -> Self {
-        let mut file = File::open(get_config()).expect("Unable to open config.json");
+        let mut file = File::open("config.json").expect("Unable to open config.json");
         let mut contents = String::new();
+
         file.read_to_string(&mut contents)
             .expect("Unable to read config.json");
         let json: Value = serde_json::from_str(&contents).unwrap();
 
-        Config { json, branch }
+        Config {
+            path: file.path().to_string_lossy().to_string(),
+            json,
+            branch,
+        }
     }
 
     pub fn get_universe_id(&self) -> Result<u64, anyhow::Error> {

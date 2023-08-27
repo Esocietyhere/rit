@@ -50,14 +50,14 @@ impl RefreshCommand {
                         let filtered_name = filter_project_file(path.to_string_lossy().as_ref());
 
                         if filtered_name != "default" {
-                            remodel.run("refresh-project.lua", &[filtered_name.clone()]);
+                            remodel.run("refreshProjectFile", &[filtered_name.clone()]);
                             println!("{} {}", Color::green().pad("Refreshing"), filtered_name);
                         }
                     }
                 }
             }
         } else if self.project_name.is_some() {
-            remodel.run("refresh-project.lua", &[project_name.clone()]);
+            remodel.run("refreshProjectFile", &[project_name.clone()]);
             println!("{} {}", Color::green().pad("Refreshing"), project_name);
         } else {
             println!("No project name specified!");

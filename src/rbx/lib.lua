@@ -5,7 +5,6 @@ libdir = libdir:match("[^/]+")
 local CONFIG_PATH = ("%s/%s"):format(libdir, "config.json")
 local NO_PLACES_ERROR = "Config does not have any places"
 
-local ARCHIVE_PATH = "src/game/client/Modules"
 local DEFAULT_PROJECT_FILE = "default.project.json"
 local DEFAULT_PROJECT_CONTENT = {
 	["name"] = "Untitled Project",
@@ -248,4 +247,4 @@ function maps:importAllMaps()
 	end
 end
 
-return maps
+return maps:{{method}}({{args}})

@@ -1,22 +1,12 @@
 use clap::Parser;
-use regex::Regex;
-use std::process::Command;
+use std::{io::Write, process::Command};
+use tempfile::Builder;
+
+static LIBRARY_TEMPLATE: &'static str = include_str!("lib.lua");
 
 #[derive(Debug, Parser)]
 pub struct Remodel {
     auth: String,
-}
-
-fn get_command(file_name: &str, args: &[String]) -> String {
-    let script_path = format!("remodel/scripts/{}", file_name);
-    let command = format!("remodel run {} remodel {}", script_path, args.join(" "));
-
-    // Sanitized command
-    Regex::new(r"\s+")
-        .unwrap()
-        .replace_all(&command, " ")
-        .trim()
-        .to_string()
 }
 
 impl Remodel {
@@ -24,8 +14,30 @@ impl Remodel {
         Remodel { auth }
     }
 
-    pub fn run(&self, file_name: &str, args: &[String]) {
-        let remodel_command = format!("{} --auth \"{}\"", get_command(file_name, args), self.auth);
+    pub fn run(&self, method: &str, args: &[String]) {
+        let complete_source = LIBRARY_TEMPLATE.replace("{{method}}", method).replace(
+            "{{args}}",
+            &args
+                .iter()
+                .map(|arg| format!("\"{}\"", arg))
+                .collect::<Vec<_>>()
+                .join(", "),
+        );
+
+        let mut temp_file = Builder::new()
+            .prefix("rit-")
+            .suffix(".lua")
+            .tempfile()
+            .unwrap();
+
+        temp_file.write_all(complete_source.as_bytes()).unwrap();
+        temp_file.flush().unwrap();
+
+        let remodel_command = format!(
+            "remodel run {} . --auth \"{}\"",
+            temp_file.path().to_string_lossy().replace("\\", "/"),
+            self.auth
+        );
         Command::new("sh")
             .arg("-c")
             .arg(remodel_command)
