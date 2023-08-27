@@ -47,22 +47,22 @@ impl ImportCommand {
         if self.map_name.is_some() {
             if self.file_path.is_some() {
                 remodel.run(
-                    &format!("importLocalMap"),
+                    "importLocalMap",
                     &[
                         self.file_path.clone().unwrap(),
                         self.map_name.clone().unwrap(),
                     ],
                 );
             } else {
-                remodel.run(&format!("importMap"), &[self.map_name.clone().unwrap()]);
+                remodel.run("importMap", &[self.map_name.clone().unwrap()]);
             }
         } else {
             if self.game_assets {
-                remodel.run(&format!("importAssets"), &[]);
+                remodel.run("importAssets", &[]);
             }
 
             if self.game_maps {
-                remodel.run(&format!("importAllMaps"), &[]);
+                remodel.run("importAllMaps", &[]);
             }
         }
 

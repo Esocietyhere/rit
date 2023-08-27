@@ -2,7 +2,7 @@ use clap::Parser;
 use std::{io::Write, process::Command};
 use tempfile::Builder;
 
-static LIBRARY_TEMPLATE: &'static str = include_str!("lib.lua");
+static LIBRARY_TEMPLATE: &str = include_str!("lib.lua");
 
 #[derive(Debug, Parser)]
 pub struct Remodel {
@@ -35,7 +35,7 @@ impl Remodel {
 
         let remodel_command = format!(
             "remodel run {} . --auth \"{}\"",
-            temp_file.path().to_string_lossy().replace("\\", "/"),
+            temp_file.path().to_string_lossy().replace('\\', "/"),
             self.auth
         );
         Command::new("sh")
