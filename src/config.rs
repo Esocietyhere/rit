@@ -23,12 +23,9 @@ impl Config {
         file.read_to_string(&mut contents)
             .expect("Unable to read config.json");
         let json: Value = serde_json::from_str(&contents).unwrap();
+        let path = file.path().to_string_lossy().to_string();
 
-        Config {
-            path: file.path().to_string_lossy().to_string(),
-            json,
-            branch,
-        }
+        Config { path, json, branch }
     }
 
     pub fn get_universe_id(&self) -> Result<u64, anyhow::Error> {
